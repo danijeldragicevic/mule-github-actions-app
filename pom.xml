@@ -18,7 +18,7 @@
 	</properties>
 
 	<build>
-		<!-- Need this, to store pom.xml values into the properties (START) -->
+		<!-- Store pom.xml values into the properties (START) -->
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -32,7 +32,7 @@
 				</includes>
 			</resource>
 		</resources>
-		<!-- Need this, to store pom.xml values into the properties (END) -->
+		<!-- Store pom.xml values into the properties (END) -->
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -44,7 +44,7 @@
 				<artifactId>mule-maven-plugin</artifactId>
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
-				<!-- Need this, to deploy application to the Anypoint Platform (START) -->
+				<!-- Deploy application to the Anypoint Platform (START) -->
 				<configuration>
 					<cloudHubDeployment>
 						<uri>https://anypoint.mulesoft.com</uri>
@@ -60,7 +60,7 @@
 					</cloudHubDeployment>
 					<classifier>mule-application</classifier>
 				</configuration>
-				<!-- Need this, to deploy application to the Anypoint Platform (END) -->
+				<!-- Deploy application to the Anypoint Platform (END) -->
 			</plugin>
 		</plugins>
 	</build>
