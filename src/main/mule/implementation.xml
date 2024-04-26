@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	
+	<!-- 
+		When this sub-flow starts, it runs the DW script, which reads application attributes from the pom.xml file. 
+		These attributes are then returned to the caller via the payload.
+	 -->
+	<sub-flow name="read-application-data" doc:id="191e6299-175c-43a0-9cbf-65a5d21418ed" >
+		<ee:transform doc:name="Create ping response" doc:id="e5e9debe-fc3f-426b-adb5-442da193dd41" >
+			<ee:message >
+				<ee:set-payload resource="dw/create-ping-response.dwl"/>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Log the payload" doc:id="e8c12211-83a7-4507-b4ec-5e8cf746815a" message="#[%dw 2.0 output text/plain --- payload]"/>
+	</sub-flow>
+</mule>
