@@ -2,7 +2,7 @@
 output application/json skipNullOn="everywhere"
 ---
 /*
- * Reads attributes from the pom.xml file
+ * Reads application identifiers from the properties file.
  * */
 {
 	groupId: p('groupId'),
