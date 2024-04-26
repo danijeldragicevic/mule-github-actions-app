@@ -42,3 +42,33 @@ jobs:
         with:
             name: artifacts
             path: target/*.jar
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: artifacts
+
+      - name: Deploy to Anypoint Platform
+        env:
+          USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+          PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+        run: |
+          artifactName=$(ls *.jar | head -1)
+          mvn deploy -DmuleDeploy \
+           -Dmule.artifact=$artifactName \
+           -Danypoint.username="$USERNAME" \
+           -Danypoint.password="$PASSWORD"
