@@ -2,9 +2,9 @@ name: Build and Deploy to Anypoint Platform
 
 on:
   push:
-    branches: [ cicd ]
+    branches: [ dev ]
   pull_request:
-    branches: [ cicd ]
+    branches: [ dev ]
 
 jobs:
   build:
