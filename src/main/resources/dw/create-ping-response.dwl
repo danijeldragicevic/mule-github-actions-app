@@ -2,10 +2,10 @@
 output application/json skipNullOn="everywhere"
 ---
 /*
- * Reads application identifiers from the properties file.
+ * Reads application identifiers from the muleapp.config file(s).
  * */
 {
-	groupId: p('groupId'),
-	artifactId: p('artifactId'),
-	version: p('version')
+	groupId: p('application.groupId'),
+	artifactId: p('application.artifactId'),
+	version: p('application.version')
 }

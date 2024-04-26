@@ -7,7 +7,7 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
 	
 	<!-- Define where the application properties are. -->
-	<configuration-properties doc:name="Configuration properties" doc:id="b9ea8e02-bf6a-45b4-8783-f1c73c25566c" file="muleapp/config/common.properties" />
+	<configuration-properties doc:name="Configuration properties" doc:id="b9ea8e02-bf6a-45b4-8783-f1c73c25566c" file="muleapp/config/common.yaml" />
 	
 	<!-- Define application HTTP listener. -->
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="440cbc4c-37f9-4fb1-bef3-5094e5285b00" >
