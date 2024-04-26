@@ -66,9 +66,11 @@ jobs:
         env:
           USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
           PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+          ENVIRONMENT: "Sandbox"
         run: |
           artifactName=$(ls *.jar | head -1)
           mvn deploy -DmuleDeploy \
            -Dmule.artifact=$artifactName \
            -Danypoint.username="$USERNAME" \
-           -Danypoint.password="$PASSWORD"
+           -Danypoint.password="$PASSWORD" \
+           -Danypoint.environment="$ENVIRONMENT"
