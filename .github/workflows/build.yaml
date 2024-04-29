@@ -2,10 +2,12 @@ name: Build and Deploy to Anypoint Platform
 
 on:
   push:
-    branches: [dev]
+    branches:
+      - dev
   pull_request:
-    branches: [qa, prod]
-    types: [closed]
+    branches:
+      - qa
+      - prod
 
 jobs:
   build:
@@ -47,6 +49,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.merged
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v4
