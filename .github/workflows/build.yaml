@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - dev
-      - qa
   pull_request:
     branches:
       - qa
@@ -51,7 +50,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.base.ref == 'qa')
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action == 'closed')
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v4
