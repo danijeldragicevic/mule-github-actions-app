@@ -6,7 +6,7 @@
 	<artifactId>mule-github-actions-app</artifactId>
 	<version>1.0.2-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
-
+	<!-- Dummy Comment -->
 	<name>mule-github-actions-app</name>
 
 	<properties>
