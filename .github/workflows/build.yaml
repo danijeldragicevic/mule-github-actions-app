@@ -1,15 +1,15 @@
 name: Build and Deploy to Anypoint Platform
 
 on:
-  push:
-    branches:
-      - dev
   pull_request:
     branches:
-      - qa
-      - prod
+      - 'qa'
+      - 'prod'
     types: 
       - closed
+    branches-ignore:
+      - 'dev'
+      - '**'
 
 jobs:
   build:
@@ -51,8 +51,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    #if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
-    if: github.event_name == 'push' || github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v4
