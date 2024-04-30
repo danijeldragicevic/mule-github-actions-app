@@ -10,6 +10,10 @@ on:
     branches: [qa, prod]
     types: [closed]
 
+env:
+  USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+  PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -67,11 +71,7 @@ jobs:
         with:
           name: artifacts
 
-      - name: Deploy to Anypoint Platform
-        env:
-          USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
-          PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
-          #BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+      - name: Deploy to DEV environment
         run: |
           artifactName=$(ls *.jar | head -1)
           mvn deploy -DmuleDeploy \
@@ -100,11 +100,7 @@ jobs:
         with:
           name: artifacts
 
-      - name: Deploy to Anypoint Platform
-        env:
-          USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
-          PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
-          #BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+      - name: Deploy to QA environment
         run: |
           artifactName=$(ls *.jar | head -1)
           mvn deploy -DmuleDeploy \
