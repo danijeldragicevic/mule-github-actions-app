@@ -3,9 +3,12 @@ name: Build and Deploy to Anypoint Platform
 #TODO Add job timeouts
 
 on:
+  push:
+    branches: [dev]
+  
   pull_request:
-    branches: [dev, qa, prod]
-    types: closed
+    branches: [qa, prod]
+    types: [closed]
 
 jobs:
   build:
@@ -46,7 +49,8 @@ jobs:
 
   deploy:
     needs: build
-    if: github.event.pull_request.merged == true
+    #if: github.event.pull_request.merged == true
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout this repo
