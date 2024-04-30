@@ -4,7 +4,7 @@ name: Build and Deploy to Anypoint Platform
 
 on:
   push:
-    branches: [dev]
+    branches: [dev, qa, prod]
   
   pull_request:
     branches: [qa, prod]
@@ -49,34 +49,67 @@ jobs:
 
   deploy:
     needs: build
-    #if: github.event.pull_request.merged == true
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout this repo
-        uses: actions/checkout@v4
-
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: artifacts
-
-      - name: Deploy to Anypoint Platform
-        env:
-          USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
-          PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
-          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-        run: |
-          artifactName=$(ls *.jar | head -1)
-          mvn deploy -DmuleDeploy \
-           -Dmule.artifact=$artifactName \
-           -Danypoint.username="$USERNAME" \
-           -Danypoint.password="$PASSWORD" \
-           -Danypoint.environment="$BRANCH_NAME"
+    
+    deploy-to-dev-env:
+      if: github.event_name == 'push' && github.head_ref == 'dev'
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout this repo
+          uses: actions/checkout@v4
+  
+        - name: Cache dependencies
+          uses: actions/cache@v4
+          with:
+            path: ~/.m2/repository
+            key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+            restore-keys: |
+              ${{ runner.os }}-maven-
+  
+        - uses: actions/download-artifact@v4
+          with:
+            name: artifacts
+  
+        - name: Deploy to Anypoint Platform
+          env:
+            USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+            PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+            BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+          run: |
+            artifactName=$(ls *.jar | head -1)
+            mvn deploy -DmuleDeploy \
+             -Dmule.artifact=$artifactName \
+             -Danypoint.username="$USERNAME" \
+             -Danypoint.password="$PASSWORD" \
+             -Danypoint.environment="$BRANCH_NAME"
+    
+    deploy-to-qa-env:
+      if: github.event.pull_request.merged == true && github.head_ref == 'qa'
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout this repo
+          uses: actions/checkout@v4
+  
+        - name: Cache dependencies
+          uses: actions/cache@v4
+          with:
+            path: ~/.m2/repository
+            key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+            restore-keys: |
+              ${{ runner.os }}-maven-
+  
+        - uses: actions/download-artifact@v4
+          with:
+            name: artifacts
+  
+        - name: Deploy to Anypoint Platform
+          env:
+            USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+            PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+            BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+          run: |
+            artifactName=$(ls *.jar | head -1)
+            mvn deploy -DmuleDeploy \
+             -Dmule.artifact=$artifactName \
+             -Danypoint.username="$USERNAME" \
+             -Danypoint.password="$PASSWORD" \
+             -Danypoint.environment="$BRANCH_NAME"
