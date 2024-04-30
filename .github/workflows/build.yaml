@@ -49,7 +49,7 @@ jobs:
 
   deploy-to-dev-env:
     needs: build
-    if: github.event_name == 'push' && github.head_ref == 'dev'
+    if: github.event_name == 'push' && github.ref_name == 'dev'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout this repo
@@ -82,7 +82,7 @@ jobs:
 
   deploy-to-qa-env:
     needs: build
-    if: github.event.pull_request.merged == true && github.head_ref == 'qa'
+    if: github.event.pull_request.merged == true && github.ref_name == 'qa'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout this repo
