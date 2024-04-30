@@ -4,12 +4,13 @@ name: Build and Deploy to Anypoint Platform
 
 on:
   push:
-    branches: [dev]
+    branches: [ dev ]
 
   pull_request:
-    branches: [qa, prod]
-    types: [closed]
+    branches: [ qa, prod ]
+    types: [ closed ]
 
+# Load secrets defined in the Github account
 env:
   USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
   PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
@@ -51,9 +52,10 @@ jobs:
             name: artifacts
             path: target/*.jar
 
+  # Runs this job with each new commit pushed against the dev branch
   deploy-to-dev:
-    needs: build
     if: github.event_name == 'push' && github.ref_name == 'dev'
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout this repo
@@ -80,9 +82,10 @@ jobs:
            -Danypoint.password="$PASSWORD" \
            -Danypoint.environment="dev"
 
+  # Runs this job with each new pull-request merged against the qa branch
   deploy-to-qa:
-    needs: build
     if: github.event.pull_request.merged == true && github.ref_name == 'qa'
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout this repo
