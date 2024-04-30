@@ -2,7 +2,7 @@ name: Build and Deploy to Anypoint Platform
 
 on:
   push:
-    branches: [dev, qa, prod]
+    branches: [dev]
   pull_request:
     branches: [qa, prod]
     types: closed
@@ -46,7 +46,6 @@ jobs:
 
   deploy:
     needs: build
-    #if: github.event.review.state == 'approved'
     if: github.event_name == 'push' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:

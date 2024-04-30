@@ -8,6 +8,8 @@
 	<packaging>mule-application</packaging>
 	<!-- Dummy Comment -->
 	<name>mule-github-actions-app</name>
+	
+	<!-- Dummy commit -->
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
