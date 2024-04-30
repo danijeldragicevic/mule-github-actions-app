@@ -8,7 +8,8 @@ on:
     branches:
       - qa
       - prod
-    types: [closed]
+    types: 
+      - closed
 
 jobs:
   build:
@@ -51,7 +52,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     #if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
-    if: github.event.pull_request.merged == true
+    if: github.event_name == 'push' || github.event.pull_request.merged == true
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v4
