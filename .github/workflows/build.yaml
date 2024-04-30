@@ -48,9 +48,8 @@ jobs:
             path: target/*.jar
 
   deploy:
-    needs: build
-    
     deploy-to-dev-env:
+      needs: build
       if: github.event_name == 'push' && github.head_ref == 'dev'
       runs-on: ubuntu-latest
       steps:
@@ -83,6 +82,7 @@ jobs:
              -Danypoint.environment="$BRANCH_NAME"
     
     deploy-to-qa-env:
+      needs: build
       if: github.event.pull_request.merged == true && github.head_ref == 'qa'
       runs-on: ubuntu-latest
       steps:
