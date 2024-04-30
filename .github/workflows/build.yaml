@@ -4,7 +4,7 @@ name: Build and Deploy to Anypoint Platform
 
 on:
   push:
-    branches: [dev, qa, prod]
+    branches: [dev]
 
   pull_request:
     branches: [qa, prod]
@@ -47,7 +47,7 @@ jobs:
             name: artifacts
             path: target/*.jar
 
-  deploy-to-dev-env:
+  deploy-to-dev:
     needs: build
     if: github.event_name == 'push' && github.ref_name == 'dev'
     runs-on: ubuntu-latest
@@ -71,16 +71,16 @@ jobs:
         env:
           USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
           PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
-          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+          #BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
         run: |
           artifactName=$(ls *.jar | head -1)
           mvn deploy -DmuleDeploy \
            -Dmule.artifact=$artifactName \
            -Danypoint.username="$USERNAME" \
            -Danypoint.password="$PASSWORD" \
-           -Danypoint.environment="$BRANCH_NAME"
+           -Danypoint.environment="dev"
 
-  deploy-to-qa-env:
+  deploy-to-qa:
     needs: build
     if: github.event.pull_request.merged == true && github.ref_name == 'qa'
     runs-on: ubuntu-latest
@@ -104,11 +104,11 @@ jobs:
         env:
           USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
           PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
-          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+          #BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
         run: |
           artifactName=$(ls *.jar | head -1)
           mvn deploy -DmuleDeploy \
            -Dmule.artifact=$artifactName \
            -Danypoint.username="$USERNAME" \
            -Danypoint.password="$PASSWORD" \
-           -Danypoint.environment="$BRANCH_NAME"
+           -Danypoint.environment="qa"
