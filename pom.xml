@@ -111,5 +111,10 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
+	
+	<!-- 
+	Change introduced in the feature branch.
+	Expecting not to build pipeline when this is pushed to the repo. 
+	-->
 
 </project>
