@@ -115,6 +115,10 @@
 	<!-- 
 	Change introduced in the feature branch.
 	Expecting not to build pipeline when this is pushed to the repo. 
+	
+	After this, change is just merged into the dev branch (no pull-request)
+	and pushed to the repo.
+	Expecting now to trigger build and deploy jobs.
 	-->
 
 </project>
