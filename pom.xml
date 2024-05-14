@@ -119,6 +119,9 @@
 	After this, change is just merged into the dev branch (no pull-request)
 	and pushed to the repo.
 	Expecting now to trigger build and deploy jobs.
+	
+	Change will now be merged into the QA branch (no pull-requset).
+	Expecting not to triger build/deploy job on the QA environment.
 	-->
 
 </project>
