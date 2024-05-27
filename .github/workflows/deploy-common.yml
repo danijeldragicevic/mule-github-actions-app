@@ -6,11 +6,12 @@ on:
       environment:
         required: true
         type: string
-
-# Load secrets defined in the Github account
-env:
-  USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
-  PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+      username:
+        required: true
+        type: string
+      password:
+        required: true
+        type: string
 
 jobs:
   deploy:
@@ -36,6 +37,6 @@ jobs:
           artifactName=$(ls *.jar | head -1)
           mvn deploy -DmuleDeploy \
            -Dmule.artifact=$artifactName \
-           -Danypoint.username="$USERNAME" \
-           -Danypoint.password="$PASSWORD" \
+           -Danypoint.username="${{ inputs.username }}" \
+           -Danypoint.password="${{ inputs.password }}" \
            -Danypoint.environment="${{ inputs.environment }}"
