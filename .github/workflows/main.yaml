@@ -10,11 +10,6 @@ on:
     branches: [ qa, prod ]
     types: [ closed ]
 
-# Load secrets defined in the Github account
-env:
-  USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
-  PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -58,8 +53,6 @@ jobs:
     uses: ./.github/workflows/deploy-common.yml
     with:
       environment: dev
-      username: "$USERNAME"
-      password: "$PASSWORD"
 
   deploy-to-qa:
     if: github.event.pull_request.merged == true && github.ref_name == 'qa'
@@ -67,8 +60,6 @@ jobs:
     uses: ./.github/workflows/deploy-common.yml
     with:
       environment: qa
-      username: "$USERNAME"
-      password: "$PASSWORD"
 
   deploy-to-prod:
     if: github.event.pull_request.merged == true && github.ref_name == 'prod'
@@ -76,5 +67,3 @@ jobs:
     uses: ./.github/workflows/deploy-common.yml
     with:
       environment: prod
-      username: "$USERNAME"
-      password: "$PASSWORD"
