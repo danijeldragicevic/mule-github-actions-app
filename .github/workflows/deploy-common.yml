@@ -6,13 +6,7 @@ on:
       environment:
         required: true
         type: string
-      username:
-        required: true
-        type: string
-      password:
-        required: true
-        type: string
-
+      
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -37,6 +31,6 @@ jobs:
           artifactName=$(ls *.jar | head -1)
           mvn deploy -DmuleDeploy \
            -Dmule.artifact=$artifactName \
-           -Danypoint.username="${{ inputs.username }}" \
-           -Danypoint.password="${{ inputs.password }}" \
+           -Danypoint.username="${{ secrets.ANYPOINT_PLATFORM_USERNAME }}" \
+           -Danypoint.password="${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}" \
            -Danypoint.environment="${{ inputs.environment }}"
