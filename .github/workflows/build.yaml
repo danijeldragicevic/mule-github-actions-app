@@ -76,6 +76,10 @@ jobs:
     needs: prepare-environment
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: artifacts
+    
       - name: Deploy to DEV environment
         if: github.event_name == 'push' && github.ref_name == 'dev'
         run: |
