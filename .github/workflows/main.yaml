@@ -10,11 +10,6 @@ on:
     branches: [ qa, prod ]
     types: [ closed ]
 
-# Load secrets defined in the Github account
-env:
-  USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
-  PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
-
 jobs:
   build:
     runs-on: ubuntu-latest

@@ -7,6 +7,11 @@ on:
         required: true
         type: string
 
+# Load secrets defined in the Github account
+env:
+  USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+  PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
