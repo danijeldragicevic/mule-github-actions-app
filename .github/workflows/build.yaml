@@ -73,7 +73,7 @@ jobs:
           name: artifacts
 
   deploy-application:
-    needs: preapre-environment
+    needs: prepare-environment
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to DEV environment
