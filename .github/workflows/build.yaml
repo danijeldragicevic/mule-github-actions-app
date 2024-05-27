@@ -72,6 +72,10 @@ jobs:
         with:
           name: artifacts
 
+  deploy-application:
+    needs: preapre-environment
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to DEV environment
         if: github.event_name == 'push' && github.ref_name == 'dev'
         run: |
