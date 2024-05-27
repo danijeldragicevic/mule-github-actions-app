@@ -67,6 +67,8 @@ jobs:
     uses: ./.github/workflows/deploy-common.yml
     with:
       environment: qa
+      username: "$USERNAME"
+      password: "$PASSWORD"
 
   deploy-to-prod:
     if: github.event.pull_request.merged == true && github.ref_name == 'prod'
@@ -74,3 +76,5 @@ jobs:
     uses: ./.github/workflows/deploy-common.yml
     with:
       environment: prod
+      username: "$USERNAME"
+      password: "$PASSWORD"
