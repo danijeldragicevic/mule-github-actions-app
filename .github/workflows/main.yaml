@@ -47,7 +47,7 @@ jobs:
             name: artifacts
             path: target/*.jar
 
-  choose-environment:
+  deploy:
     runs-on: ubuntu-latest
     env:
       username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
