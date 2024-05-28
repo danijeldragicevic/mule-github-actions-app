@@ -57,8 +57,9 @@ jobs:
     if: github.event_name == 'push' && github.ref_name == 'dev'
     needs: build
     runs-on: ubuntu-latest
-    uses: ./
-    with:
-      username: "$username"
-      password: "$password"
-      environment: "dev"
+    steps:
+      uses: ./
+      with:
+        username: "$username"
+        password: "$password"
+        environment: "dev"
