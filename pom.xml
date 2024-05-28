@@ -5,9 +5,7 @@
 	<artifactId>mule-github-actions-app</artifactId>
 	<version>1.0.1-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
-
 	<name>mule-github-actions-app-ddragicevic005</name>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -111,17 +109,4 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-	
-	<!-- 
-	Change introduced in the feature branch.
-	Expecting not to build pipeline when this is pushed to the repo. 
-	
-	After this, change is just merged into the dev branch (no pull-request)
-	and pushed to the repo.
-	Expecting now to trigger build and deploy jobs.
-	
-	Change will now be merged into the QA branch (no pull-requset).
-	Expecting not to triger build/deploy job on the QA environment.
-	-->
-
 </project>
