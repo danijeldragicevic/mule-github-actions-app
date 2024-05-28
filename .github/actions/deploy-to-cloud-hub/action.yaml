@@ -1,5 +1,4 @@
-name: 'Hello World'
-description: 'Greet someone'
+name: 'Deploy to Cloud Hub'
 inputs:
   username:
     required: true
