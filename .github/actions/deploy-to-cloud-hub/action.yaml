@@ -25,7 +25,7 @@ runs:
       with:
         name: artifacts
   
-    - name: Deploy to DEV environment
+    - name: Deploy the application
       run: |
         artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy \
