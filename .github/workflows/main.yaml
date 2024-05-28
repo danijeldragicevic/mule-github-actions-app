@@ -48,6 +48,7 @@ jobs:
             path: target/*.jar
 
   deploy:
+    runs-on: ubuntu-latest
     env:
       username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
       password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
