@@ -47,12 +47,12 @@ jobs:
             name: artifacts
             path: target/*.jar
 
-  deploy:
+  choose-environment:
     runs-on: ubuntu-latest
     env:
       username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
       password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
-      
+
     needs: build
     steps:
       - name: Deploy to DEV
@@ -62,7 +62,7 @@ jobs:
           environment: dev
           username: "$username"
           password: "$password"
-      
+
       - name: Deploy to QA
         uses: ./.github/workflows/deploy-common.yml
         if: github.event.pull_request.merged == true && github.ref_name == 'qa'
