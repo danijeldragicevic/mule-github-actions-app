@@ -6,11 +6,22 @@ on:
       environment:
         required: true
         type: string
-      
+      username:
+        required: true
+        type: string
+      password:
+        required: true
+        type: string   
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Pring inputs
+        run: |
+          echo "environment: ${{ inputs.environment }}"
+          echo "username: ${{ inputs.username }}"
+      
       - name: Checkout this repo
         uses: actions/checkout@v4
 
@@ -25,12 +36,12 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: artifacts
-
+      
       - name: Deploy to ${{ inputs.environment }} environment
         run: |
           artifactName=$(ls *.jar | head -1)
           mvn deploy -DmuleDeploy \
            -Dmule.artifact=$artifactName \
-           -Danypoint.username="${{ secrets.ANYPOINT_PLATFORM_USERNAME }}" \
-           -Danypoint.password="${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}" \
+           -Danypoint.username="${{ inputs.username }}" \
+           -Danypoint.password="${{ inputs.password }}" \
            -Danypoint.environment="${{ inputs.environment }}"

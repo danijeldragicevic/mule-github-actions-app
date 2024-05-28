@@ -7,7 +7,7 @@ on:
     branches: [ dev ]
 
   pull_request:
-    branches: [ qa, prod ]
+    branches: [ qa ]
     types: [ closed ]
 
 jobs:
@@ -47,23 +47,24 @@ jobs:
             name: artifacts
             path: target/*.jar
 
-  deploy-to-dev:
-    if: github.event_name == 'push' && github.ref_name == 'dev'
+  deploy:
+    env:
+      username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+      password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+      
     needs: build
-    uses: ./.github/workflows/deploy-common.yml
-    with:
-      environment: dev
-
-  deploy-to-qa:
-    if: github.event.pull_request.merged == true && github.ref_name == 'qa'
-    needs: build
-    uses: ./.github/workflows/deploy-common.yml
-    with:
-      environment: qa
-
-  deploy-to-prod:
-    if: github.event.pull_request.merged == true && github.ref_name == 'prod'
-    needs: build
-    uses: ./.github/workflows/deploy-common.yml
-    with:
-      environment: prod
+    steps:
+      - name: Deploy to DEV
+        uses: ./.github/workflows/deploy-common.yml
+        if: github.event_name == 'push' && github.ref_name == 'dev'
+        with:
+          environment: dev
+          username: "$username"
+          password: "$password"
+      
+      - name: Deploy to QA
+        if: github.event.pull_request.merged == true && github.ref_name == 'qa'
+        with:
+          environment: qa
+          username: "$username"
+          password: "$password"
