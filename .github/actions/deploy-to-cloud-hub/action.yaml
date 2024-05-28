@@ -33,6 +33,7 @@ runs:
          -Danypoint.username="$username" \
          -Danypoint.password="$password" \
          -Danypoint.environment="$environment"
+      shell: bash
       env:
         username: ${{ inputs.username }}
         password: ${{ inputs.password }}
