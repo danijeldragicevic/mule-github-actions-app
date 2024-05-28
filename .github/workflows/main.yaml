@@ -54,15 +54,13 @@ jobs:
 
   # Runs this job with each new commit pushed against the dev branch
   deploy-to-dev:
-    name: Deploy to DEV environment
     needs: build
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref_name == 'dev'
     steps:
-      - uses: actions/checkout@v4
-      - id: foo
+      - name: Load common logic
         uses: ./
-          with:
-            username: "$username"
-            password: "$password"
-            environment: "dev"
+        with:
+          username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+          password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+          environment: "dev"
