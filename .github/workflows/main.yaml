@@ -1,0 +1,81 @@
+name: Build and Deploy to Anypoint Platform
+
+#TODO Add job timeouts
+#TODO Print .jar name that is going to be deployed
+
+on:
+  push:
+    branches: [ dev ]
+
+  pull_request:
+    branches: [ qa ]
+    types: [ closed ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+
+      - name: Stamp artifact file name with commit hash
+        run: |
+          artifactName1=$(ls target/*.jar | head -1)
+          commitHash=$(git rev-parse --short "$GITHUB_SHA")
+          artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/-$commitHash.jar/g")
+          mv $artifactName1 $artifactName2
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts
+          path: target/*.jar
+
+  # Runs this job with each new commit pushed against the dev branch
+  deploy-to-dev:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref_name == 'dev'
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      
+      - name: Use local deploy-to-cloud-hub action
+        uses: ./.github/actions/deploy-to-cloud-hub
+        with:
+          username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+          password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+          environment: "dev"
+  
+  # Runs this job with each new pull-request merged against the qa branch
+  deploy-to-qa:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && github.ref_name == 'qa'
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      
+      - name: Use local deploy-to-cloud-hub action
+        uses: ./.github/actions/deploy-to-cloud-hub
+        with:
+          username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+          password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+          environment: "qa"

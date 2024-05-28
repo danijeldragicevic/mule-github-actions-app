@@ -1,0 +1,40 @@
+name: 'Deploy to Cloud Hub'
+inputs:
+  username:
+    required: true
+  password:
+    required: true
+  environment:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout this repo
+      uses: actions/checkout@v4
+  
+    - name: Cache dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+  
+    - uses: actions/download-artifact@v4
+      with:
+        name: artifacts
+  
+    - name: Deploy the application
+      run: |
+        artifactName=$(ls *.jar | head -1)
+        mvn deploy -DmuleDeploy \
+         -Dmule.artifact=$artifactName \
+         -Danypoint.username="$username" \
+         -Danypoint.password="$password" \
+         -Danypoint.environment="$environment"
+      shell: bash
+      env:
+        username: ${{ inputs.username }}
+        password: ${{ inputs.password }}
+        environment: ${{ inputs.environment }}
