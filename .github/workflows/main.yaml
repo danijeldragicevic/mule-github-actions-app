@@ -1,6 +1,7 @@
 name: Build and Deploy to Anypoint Platform
 
 #TODO Add job timeouts
+#TODO Print .jar name that is going to be deployed
 
 on:
   push:
