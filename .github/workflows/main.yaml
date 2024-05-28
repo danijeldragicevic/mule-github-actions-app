@@ -63,6 +63,7 @@ jobs:
           password: "$password"
       
       - name: Deploy to QA
+        uses: ./.github/workflows/deploy-common.yml
         if: github.event.pull_request.merged == true && github.ref_name == 'qa'
         with:
           environment: qa
