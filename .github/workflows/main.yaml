@@ -56,18 +56,12 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set DEV environment
-        uses: actions/cache@v4
-        if: github.event_name == 'push' && github.ref_name == 'dev'
-        env:
-          environment: dev
+      - name: Set target environment
+        run: |
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "dev" ]]; then
+            echo "environment=DEV" >> $GITHUB_ENV
+          fi
       
-      - name: Set QA environment
-        uses: actions/cache@v4
-        if: github.event.pull_request.merged == true && github.ref_name == 'qa'
-        env:
-          environment: qa
-
       - name: Use local deploy-to-cloud-hub action
         uses: ./.github/actions/deploy-to-cloud-hub
         with:
