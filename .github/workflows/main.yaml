@@ -59,12 +59,17 @@ jobs:
       - name: Set target environment
         run: |
           if [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "dev" ]]; then
-            echo "environment=DEV" >> $GITHUB_ENV
+            echo "environment=dev" >> $GITHUB_ENV
           fi
+        shell: bash
+          
+      - name: Print github variables
+        run: echo ${{ env.environment }}
+        shell: bash
       
       - name: Use local deploy-to-cloud-hub action
         uses: ./.github/actions/deploy-to-cloud-hub
         with:
           username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
-          environment: "$environment"
+          environment: ${{ env.environment }}
