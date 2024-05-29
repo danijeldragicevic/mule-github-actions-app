@@ -60,6 +60,11 @@ jobs:
         run: |
           if [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "dev" ]]; then
             echo "environment=dev" >> $GITHUB_ENV
+          elif [[ "${{ github.event.pull_request.merged }}" == "true" && "${{ github.ref_name }}" == "qa" ]]; then
+            echo "environment=qa" >> $GITHUB_ENV
+          else
+            echo "Skipping deployment"
+            exit 0
           fi
         shell: bash
           
