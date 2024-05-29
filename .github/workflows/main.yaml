@@ -49,33 +49,24 @@ jobs:
           path: target/*.jar
 
   # Runs this job with each new commit pushed against the dev branch
-  deploy-to-dev:
+  deploy:
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref_name == 'dev'
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      
+
+      - name: Set environment
+        if: github.event_name == 'push' && github.ref_name == 'dev'
+          env:
+            environment: dev
+        if: github.event.pull_request.merged == true && github.ref_name == 'qa'
+          env:
+            environment: qa
+
       - name: Use local deploy-to-cloud-hub action
         uses: ./.github/actions/deploy-to-cloud-hub
         with:
           username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
-          environment: "dev"
-  
-  # Runs this job with each new pull-request merged against the qa branch
-  deploy-to-qa:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true && github.ref_name == 'qa'
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-      
-      - name: Use local deploy-to-cloud-hub action
-        uses: ./.github/actions/deploy-to-cloud-hub
-        with:
-          username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
-          password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
-          environment: "qa"
+          environment: "$environment"
