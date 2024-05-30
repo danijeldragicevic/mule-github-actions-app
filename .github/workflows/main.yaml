@@ -5,7 +5,7 @@ name: Build and Deploy to Anypoint Platform
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ dev, qa ]
 
   pull_request:
     branches: [ qa ]
@@ -48,7 +48,6 @@ jobs:
           name: artifacts
           path: target/*.jar
 
-  # Runs this job with each new commit pushed against the dev branch
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -68,12 +67,8 @@ jobs:
           fi
         shell: bash
           
-      - name: Print github variables
-        run: echo ${{ env.environment }}
-        shell: bash
-      
-      - name: Use local deploy-to-cloud-hub action
-        uses: ./.github/actions/deploy-to-cloud-hub
+      - name: Deploy to Cloud Hub 1.0
+        uses: ./.github/actions/deploy-to-ch1
         with:
           username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
