@@ -66,8 +66,8 @@ jobs:
             exit 0
           fi
         shell: bash
-          
-      - name: Deploy to Cloud Hub 1.0
+        
+      - name: Deploy to Cloud Hub 1.0, ${{ env.environment }} environment
         uses: ./.github/actions/deploy-to-ch1
         with:
           username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
