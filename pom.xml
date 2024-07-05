@@ -26,6 +26,21 @@
                 <configuration/>
             </plugin>
         </plugins>
+        <!-- Store pom.xml values into the properties (START) -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>muleapp/config/common.yaml</include>
+                </includes>
+            </resource>
+        </resources>
+        <!-- Store pom.xml values into the properties (END) -->
     </build>
     <repositories>
         <repository>

@@ -124,17 +124,6 @@ output application/json
         </error-handler>
     </flow>
     <flow name="get:\ping:api-config">
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  groupId: "479e5802-35c4-4e44-ace2-74d88a76979c",
-  artifactId: "mule-github-actions-app",
-  version: "1.0.0-SNAPSHOT"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+        <flow-ref name="read-application-data" />
     </flow>
 </mule>
