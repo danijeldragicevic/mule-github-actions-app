@@ -1,0 +1,10 @@
+# Application identifiers from the pom.xml file:
+application:
+  groupId: "${groupId}"
+  artifactId: "${artifactId}"
+  version: "${version}"
+
+# HTTP_Listener_config:
+http:
+  host: "0.0.0.0"
+  port: "8081"
