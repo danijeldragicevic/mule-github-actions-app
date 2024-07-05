@@ -1,0 +1,87 @@
+name: Build and Deploy to Anypoint Platform
+
+on:
+  push:
+    branches: 
+      - dev
+      - qa
+      - prod
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml -DskipMunitTests
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts
+          path: target/*.jar
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Set target environment and deployment type
+        run: |
+          # Deployment goes to CH1 (dev)
+          if [[ "${{ github.ref_name }}" == "dev" ]]; then
+            echo "environment=dev" >> $GITHUB_ENV
+            echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
+          
+          # Deployment goes to CH1 (qa)
+          elif [[ "${{ github.ref_name }}" == "qa" ]]; then
+            echo "environment=qa" >> $GITHUB_ENV
+            echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
+          
+          # Deployment goes to CH2 (prod)
+          elif [[ "${{ github.ref_name }}" == "prod" ]]; then
+            echo "environment=prod" >> $GITHUB_ENV
+            echo "deploymentType=cloudhub2Deployment" >> $GITHUB_ENV
+          
+          else
+            echo "Skipping deployment"
+            exit 0
+          fi
+        shell: bash
+
+      - name: Deploy to CloudHub 1.0 (${{ env.environment }})
+        if: env.deploymentType == 'cloudHubDeployment'
+        uses: ./.github/actions/deploy-to-ch1
+        with:
+          username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+          password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+          environment: ${{ env.environment }}
+      
+      - name: Deploy to CloudHub 2.0 (${{ env.environment }})
+        if: env.deploymentType == 'cloudhub2Deployment'
+        uses: ./.github/actions/deploy-to-ch2
+        with:
+          username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+          password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+          environment: ${{ env.environment }}
+      
