@@ -4,7 +4,7 @@ application:
   artifactId: "${artifactId}"
   version: "${version}"
 
-# HTTP_Listener_config:
+# HTTP_Listener_Config:
 http:
   host: "0.0.0.0"
   port: "8081"
