@@ -5,7 +5,7 @@
   xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 	http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
   
-  <sub-flow name="read-application-data" doc:id="191e6299-175c-43a0-9cbf-65a5d21418ed" >
+  	<sub-flow name="read-application-data" doc:id="191e6299-175c-43a0-9cbf-65a5d21418ed" >
 		<ee:transform doc:name="Create ping response" doc:id="e5e9debe-fc3f-426b-adb5-442da193dd41" >
 			<ee:message >
 				<ee:set-payload resource="dw/create-ping-response.dwl"/>
