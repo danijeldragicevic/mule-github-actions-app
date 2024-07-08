@@ -1,0 +1,4 @@
+application:
+  groupId: "dummyGroupId"
+  artifactId: "dummyArtifactId"
+  version: "dummyVersion"
