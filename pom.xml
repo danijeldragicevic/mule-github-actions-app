@@ -92,13 +92,13 @@
         </pluginRepository>
     </pluginRepositories>
     <dependencies>
-        <dependency>
+        <!-- <dependency>
             <groupId>479e5802-35c4-4e44-ace2-74d88a76979c</groupId>
             <artifactId>mule-github-actions-api</artifactId>
             <version>1.0.0</version>
             <classifier>raml</classifier>
             <type>zip</type>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>org.mule.modules</groupId>
             <artifactId>mule-apikit-module</artifactId>
