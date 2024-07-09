@@ -52,7 +52,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
+      - name: Checkout this repo
         uses: actions/checkout@v4
 
       - name: Set target environment
