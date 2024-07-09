@@ -70,6 +70,8 @@ jobs:
       - name: Deploy to Cloud Hub 1.0, ${{ env.environment }} environment
         uses: ./.github/actions/deploy-to-ch1
         with:
-          username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
-          password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+          #username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+          #password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+          clientId: ${{ secrets.CONNECTED_APP_CLIENT_ID }}
+          clientSecret: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
           environment: ${{ env.environment }}

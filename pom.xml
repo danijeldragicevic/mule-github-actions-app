@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>479e5802-35c4-4e44-ace2-74d88a76979c</groupId>
 	<artifactId>mule-github-actions-app</artifactId>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.4-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
 	<name>mule-github-actions-app</name>
 	<properties>
@@ -30,8 +30,13 @@
 					<cloudHubDeployment>
 						<uri>https://anypoint.mulesoft.com</uri>
 						<muleVersion>${app.runtime}</muleVersion>
+						<!--
 						<username>${anypoint.username}</username>
 						<password>${anypoint.password}</password>
+						-->
+						<connectedAppClientId>${client.id}</connectedAppClientId>
+						<connectedAppClientSecret>${client.secret}</connectedAppClientSecret>
+						<connectedAppGrantType>client_credentials</connectedAppGrantType>
 						<applicationName>${name}-${anypoint.environment}</applicationName>
 						<environment>${anypoint.environment}</environment>
 						<workerType>MICRO</workerType>

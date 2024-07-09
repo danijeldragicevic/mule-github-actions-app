@@ -1,9 +1,11 @@
 name: 'Deploy to Cloud Hub 1.0'
 
 inputs:
-  username:
+  #username:
+  clientId:
     required: true
-  password:
+  #password:
+  clientSecret:
     required: true
   environment:
     required: true
@@ -31,11 +33,11 @@ runs:
         artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy -DskipMunitTests \
          -Dmule.artifact=$artifactName \
-         -Danypoint.username="$username" \
-         -Danypoint.password="$password" \
+         -Dclient.id="$clientId" \
+         -Dclient.secret="$clientSecret" \
          -Danypoint.environment="$environment"
       shell: bash
       env:
-        username: ${{ inputs.username }}
-        password: ${{ inputs.password }}
+        clientId: ${{ inputs.clientId }}
+        clientSecret: ${{ inputs.clientSecret }}
         environment: ${{ inputs.environment }}
