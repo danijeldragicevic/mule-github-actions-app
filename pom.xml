@@ -4,7 +4,7 @@
     <groupId>479e5802-35c4-4e44-ace2-74d88a76979c</groupId>
     <artifactId>mule-github-actions-app</artifactId>
     <version>1.0.7</version>
-    <!-- <packaging>mule-application</packaging> -->
+    <packaging>jar</packaging>
     <name>mule-github-actions-app</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
