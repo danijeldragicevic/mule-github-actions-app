@@ -29,7 +29,7 @@ runs:
     - name: Deploy the application
       run: |
         artifactName=$(ls *.jar | head -1)
-        mvn deploy -DmuleDeploy -DskipMunitTests \
+        mvn deploy -DmuleDeploy -DskipMunitTests -PcloudHubDeployment\
          -Dmule.artifact=$artifactName \
          -Dclient.id="$clientId" \
          -Dclient.secret="$clientSecret" \

@@ -20,30 +20,6 @@
                 <version>3.1.0</version>
             </plugin>
             <plugin>
-                <groupId>org.mule.tools.maven</groupId>
-                <artifactId>mule-maven-plugin</artifactId>
-                <version>${mule.maven.plugin.version}</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <cloudHubDeployment>
-                        <uri>https://anypoint.mulesoft.com</uri>
-                        <muleVersion>${app.runtime}</muleVersion>
-                        <connectedAppClientId>${client.id}</connectedAppClientId>
-                        <connectedAppClientSecret>${client.secret}</connectedAppClientSecret>
-                        <connectedAppGrantType>client_credentials</connectedAppGrantType>
-                        <applicationName>${name}-${anypoint.environment}</applicationName>
-                        <environment>${anypoint.environment}</environment>
-                        <releaseChannel>EDGE</releaseChannel>
-                        <javaVersion>17</javaVersion>
-                        <workerType>MICRO</workerType>
-                        <region>us-east-2</region>
-                        <workers>1</workers>
-                        <objectStoreV2>true</objectStoreV2>
-                    </cloudHubDeployment>
-                    <classifier>mule-application</classifier>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>com.mulesoft.munit.tools</groupId>
                 <artifactId>munit-maven-plugin</artifactId>
                 <version>${munit.version}</version>
@@ -131,6 +107,7 @@
             <layout>default</layout>
         </repository>
     </repositories>
+    
     <pluginRepositories>
         <pluginRepository>
             <id>mulesoft-releases</id>
@@ -142,6 +119,7 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
+    
     <distributionManagement>
         <repository>
             <id>Repository</id>
@@ -150,4 +128,41 @@
             <layout>default</layout>
         </repository>
     </distributionManagement>
+
+    <profiles>
+        <profile>
+            <id>cloudHubDeployment</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.mule.tools.maven</groupId>
+                        <artifactId>mule-maven-plugin</artifactId>
+                        <version>${mule.maven.plugin.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <cloudHubDeployment>
+                                <uri>https://anypoint.mulesoft.com</uri>
+                                <muleVersion>${app.runtime}</muleVersion>
+                                <connectedAppClientId>${client.id}</connectedAppClientId>
+                                <connectedAppClientSecret>${client.secret}</connectedAppClientSecret>
+                                <connectedAppGrantType>client_credentials</connectedAppGrantType>
+                                <applicationName>${name}-${anypoint.environment}</applicationName>
+                                <environment>${anypoint.environment}</environment>
+                                <releaseChannel>EDGE</releaseChannel>
+                                <javaVersion>17</javaVersion>
+                                <workerType>MICRO</workerType>
+                                <region>us-east-2</region>
+                                <workers>1</workers>
+                                <objectStoreV2>true</objectStoreV2>
+                            </cloudHubDeployment>
+                            <classifier>mule-application</classifier>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>cloudhub2Deployment</id>
+        </profile>
+    </profiles>
 </project>
