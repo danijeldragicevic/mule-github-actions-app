@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>479e5802-35c4-4e44-ace2-74d88a76979c</groupId>
     <artifactId>mule-github-actions-app</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <packaging>mule-application</packaging>
     <name>mule-github-actions-app</name>
     <properties>
@@ -33,6 +33,8 @@
                         <connectedAppGrantType>client_credentials</connectedAppGrantType>
                         <applicationName>${name}-${anypoint.environment}</applicationName>
                         <environment>${anypoint.environment}</environment>
+                        <releaseChannel>EDGE</releaseChannel>
+                        <javaVersion>17</javaVersion>
                         <workerType>MICRO</workerType>
                         <region>us-east-2</region>
                         <workers>1</workers>
@@ -108,14 +110,6 @@
         </dependency>
     </dependencies>
     <repositories>
-        <!--
-        <repository>
-            <id>anypoint-exchange-v2</id>
-            <name>Anypoint Exchange</name>
-            <url>https://maven.anypoint.mulesoft.com/api/v2/maven</url>
-            <layout>default</layout>
-        </repository>
-        -->
         <repository>
             <id>anypoint-exchange-v3</id>
             <name>Anypoint Exchange</name>
@@ -126,6 +120,12 @@
             <id>mulesoft-releases</id>
             <name>MuleSoft Releases Repository</name>
             <url>https://repository.mulesoft.org/releases/</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>Repository</id>
+            <name>Private Exchange repository</name>
+            <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/${project.groupId}/maven</url>
             <layout>default</layout>
         </repository>
     </repositories>
