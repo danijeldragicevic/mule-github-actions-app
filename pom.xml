@@ -11,7 +11,6 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<mule.maven.plugin.version>4.1.1</mule.maven.plugin.version>
 		<munit.version>3.2.0</munit.version>
-		<!-- <app.runtime>4.6-java17</app.runtime> -->
 	</properties>
 	<build>
 		<plugins>
@@ -25,15 +24,10 @@
 				<artifactId>mule-maven-plugin</artifactId>
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
-				<!-- Deploy application to the Anypoint Platform (START) -->
 				<configuration>
 					<cloudHubDeployment>
 						<uri>https://anypoint.mulesoft.com</uri>
 						<muleVersion>${app.runtime}</muleVersion>
-						<!--
-						<username>${anypoint.username}</username>
-						<password>${anypoint.password}</password>
-						-->
 						<connectedAppClientId>${client.id}</connectedAppClientId>
 						<connectedAppClientSecret>${client.secret}</connectedAppClientSecret>
 						<connectedAppGrantType>client_credentials</connectedAppGrantType>
@@ -46,7 +40,6 @@
 					</cloudHubDeployment>
 					<classifier>mule-application</classifier>
 				</configuration>
-				<!-- Deploy application to the Anypoint Platform (END) -->
 			</plugin>
 			<plugin>
 				<groupId>com.mulesoft.munit.tools</groupId>
@@ -72,8 +65,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		
-		<!-- Store pom.xml values into the properties (START) -->
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -87,9 +78,7 @@
 				</includes>
 			</resource>
 		</resources>
-		<!-- Store pom.xml values into the properties (END) -->
 	</build>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.mule.modules</groupId>
@@ -118,7 +107,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
 	<repositories>
 		<repository>
 			<id>anypoint-exchange-v2</id>
