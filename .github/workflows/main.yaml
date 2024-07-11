@@ -71,14 +71,14 @@ jobs:
         if: env.deploymentType == 'cloudHubDeployment'
         uses: ./.github/actions/deploy-to-ch1
         with:
-          clientId: ${{ secrets.CONNECTED_APP_CLIENT_ID }}
-          clientSecret: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
+          username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+          password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
           environment: ${{ env.environment }}
       
       - name: Deploy to Cloud Hub 2.0
         if: env.deploymentType == 'cloudhub2Deployment'
         uses: ./.github/actions/deploy-to-ch2
         with:
-          clientId: ${{ secrets.CONNECTED_APP_CLIENT_ID }}
-          clientSecret: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
+          username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+          password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
           environment: ${{ env.environment }}
