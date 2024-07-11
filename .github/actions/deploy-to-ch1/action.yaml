@@ -1,9 +1,9 @@
 name: 'Deploy to Cloud Hub 1.0'
 
 inputs:
-  clientId:
+  username:
     required: true
-  clientSecret:
+  password:
     required: true
   environment:
     required: true
@@ -25,17 +25,21 @@ runs:
     - uses: actions/download-artifact@v4
       with:
         name: artifacts
+
+    - name: Echo deployment start message
+      run: echo "Starting deploy-to-ch1"
+      shell: bash
   
     - name: Deploy the application
       run: |
         artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy -DskipMunitTests -PcloudHubDeployment\
          -Dmule.artifact=$artifactName \
-         -Dclient.id="$clientId" \
-         -Dclient.secret="$clientSecret" \
+         -Danypoint.username="$username" \
+         -Danypoint.password="$password" \
          -Danypoint.environment="$environment"
       shell: bash
       env:
-        clientId: ${{ inputs.clientId }}
-        clientSecret: ${{ inputs.clientSecret }}
+        username: ${{ inputs.username }}
+        password: ${{ inputs.password }}
         environment: ${{ inputs.environment }}

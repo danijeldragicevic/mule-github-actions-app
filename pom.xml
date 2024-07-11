@@ -144,9 +144,8 @@
                             <cloudHubDeployment>
                                 <uri>https://anypoint.mulesoft.com</uri>
                                 <muleVersion>${app.runtime}</muleVersion>
-                                <connectedAppClientId>${client.id}</connectedAppClientId>
-                                <connectedAppClientSecret>${client.secret}</connectedAppClientSecret>
-                                <connectedAppGrantType>client_credentials</connectedAppGrantType>
+                                <username>${anypoint.username}</username>
+                                <password>${anypoint.password}</password>
                                 <applicationName>${name}-${anypoint.environment}</applicationName>
                                 <environment>${anypoint.environment}</environment>
                                 <releaseChannel>EDGE</releaseChannel>
