@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>479e5802-35c4-4e44-ace2-74d88a76979c</groupId>
     <artifactId>mule-github-actions-app</artifactId>
-    <version>1.0.9</version>
+    <version>1.0.10</version>
     <packaging>mule-application</packaging>
     <name>mule-github-actions-app</name>
     <properties>
@@ -94,7 +94,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    
     <repositories>
         <repository>
             <id>anypoint-exchange-v3</id>
@@ -115,7 +114,6 @@
             <layout>default</layout>
         </repository>
     </repositories>
-    
     <pluginRepositories>
         <pluginRepository>
             <id>mulesoft-releases</id>
@@ -127,7 +125,6 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-    
     <distributionManagement>
         <repository>
             <id>Repository</id>
@@ -136,7 +133,6 @@
             <layout>default</layout>
         </repository>
     </distributionManagement>
-    
     <profiles>
         <profile>
             <id>cloudHubDeployment</id>
@@ -183,7 +179,8 @@
                                 <muleVersion>${app.runtime}</muleVersion>
                                 <username>${anypoint.username}</username>
                                 <password>${anypoint.password}</password>
-                                <applicationName>${project.artifactId}-${anypoint.environment}</applicationName> <!-- Maybe change with project.artifactId-->
+                                <applicationName>${project.artifactId}-${anypoint.environment}</applicationName>
+                                <!-- Maybe change with project.artifactId-->
                                 <environment>${anypoint.environment}</environment>
                                 <releaseChannel>EDGE</releaseChannel>
                                 <javaVersion>17</javaVersion>
@@ -197,7 +194,7 @@
                             </cloudhub2Deployment>
                             <classifier>mule-application</classifier>
                         </configuration>
-                      </plugin>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
