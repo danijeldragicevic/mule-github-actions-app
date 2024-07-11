@@ -33,8 +33,12 @@ runs:
     - name: Publish to Exchange
       run: |
         mvn deploy --settings .maven/settings.xml -DskipMunitTests \
-        -Danypoint.username="${{ secrets.ANYPOINT_PLATFORM_USERNAME }}" \
-        -Danypoint.password="${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}"
+         -Danypoint.username="$username" \
+         -Danypoint.password="$password" \
+      shell: bash
+      env:
+        username: ${{ inputs.username }}
+        password: ${{ inputs.password }}
 
     - name: Deploy the application
       run: |
