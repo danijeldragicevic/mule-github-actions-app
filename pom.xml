@@ -91,6 +91,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    
     <repositories>
         <repository>
             <id>anypoint-exchange-v3</id>
@@ -111,6 +112,7 @@
             <layout>default</layout>
         </repository>
     </repositories>
+    
     <pluginRepositories>
         <pluginRepository>
             <id>mulesoft-releases</id>
@@ -122,6 +124,7 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
+    
     <distributionManagement>
         <repository>
             <id>Repository</id>
@@ -130,6 +133,7 @@
             <layout>default</layout>
         </repository>
     </distributionManagement>
+    
     <profiles>
         <profile>
             <id>cloudHubDeployment</id>
@@ -146,7 +150,7 @@
                                 <muleVersion>${app.runtime}</muleVersion>
                                 <username>${anypoint.username}</username>
                                 <password>${anypoint.password}</password>
-                                <applicationName>${name}-${anypoint.environment}</applicationName>
+                                <applicationName>${artifactId}-${anypoint.environment}</applicationName>
                                 <environment>${anypoint.environment}</environment>
                                 <releaseChannel>EDGE</releaseChannel>
                                 <javaVersion>17</javaVersion>
@@ -158,6 +162,39 @@
                             <classifier>mule-application</classifier>
                         </configuration>
                     </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>cloudhub2Deployment</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.mule.tools.maven</groupId>
+                        <artifactId>mule-maven-plugin</artifactId>
+                        <version>${mule.maven.plugin.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                          <cloudhub2Deployment>
+                            <uri>https://anypoint.mulesoft.com</uri>
+                            <muleVersion>${app.runtime}</muleVersion>
+                            <username>${anypoint.username}</username>
+                            <password>${anypoint.password}</password>
+                            <applicationName>${artifactId}-${anypoint.environment}</applicationName> <!-- Maybe change with project.artifactId-->
+                            <environment>${anypoint.environment}</environment>
+                            <releaseChannel>EDGE</releaseChannel>
+                            <javaVersion>17</javaVersion>
+                            <replicas>1</replicas>
+                            <target>Cloudhub-US-East-2</target>
+                            <vCores>0.1</vCores>
+                            <provider>MC</provider>
+                            <deploymentSettings>
+                                <generateDefaultPublicUrl>true</generateDefaultPublicUrl>
+                            </deploymentSettings>
+                        </cloudhub2Deployment>
+                          <classifier>mule-application</classifier>
+                        </configuration>
+                      </plugin>
                 </plugins>
             </build>
         </profile>

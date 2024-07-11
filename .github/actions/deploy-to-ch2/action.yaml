@@ -33,7 +33,7 @@ runs:
     - name: Deploy the application
       run: |
         artifactName=$(ls *.jar | head -1)
-        mvn deploy -DmuleDeploy -DskipMunitTests -PcloudHubDeployment\
+        mvn deploy -DmuleDeploy -DskipMunitTests -Pcloudhub2Deployment\
          -Dmule.artifact=$artifactName \
          -Danypoint.username="$username" \
          -Danypoint.password="$password" \
