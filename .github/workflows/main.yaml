@@ -53,19 +53,30 @@ jobs:
       - name: Checkout this repo
         uses: actions/checkout@v4
 
-      - name: Set target environment
+      - name: Set target environment and deployment type
         run: |
           if [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "dev" ]]; then
             echo "environment=dev" >> $GITHUB_ENV
+            echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
           elif [[ "${{ github.event.pull_request.merged }}" == "true" && "${{ github.ref_name }}" == "qa" ]]; then
             echo "environment=qa" >> $GITHUB_ENV
+            echo "deploymentType=cloudhub2Deployment" >> $GITHUB_ENV
           else
             echo "Skipping deployment"
             exit 0
           fi
         shell: bash
-        
+
       - name: Deploy to Cloud Hub 1.0, ${{ env.environment }} environment
+        if: env.deploymentType == 'cloudHubDeployment'
+        uses: ./.github/actions/deploy-to-ch1
+        with:
+          clientId: ${{ secrets.CONNECTED_APP_CLIENT_ID }}
+          clientSecret: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
+          environment: ${{ env.environment }}
+      
+      - name: Deploy to Cloud Hub 1.0, ${{ env.environment }} environment
+        if: env.deploymentType == 'cloudhub2Deployment'
         uses: ./.github/actions/deploy-to-ch1
         with:
           clientId: ${{ secrets.CONNECTED_APP_CLIENT_ID }}
