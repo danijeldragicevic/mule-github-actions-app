@@ -29,11 +29,11 @@ runs:
     - name: Echo deployment start message
       run: echo "Starting deploy-to-ch1"
       shell: bash
-  
+
     - name: Deploy the application
       run: |
         artifactName=$(ls *.jar | head -1)
-        mvn deploy -DmuleDeploy -DskipMunitTests -Pcloudhub2Deployment\
+        mvn deploy --settings .maven/settings.xml -DmuleDeploy -DskipMunitTests -Pcloudhub2Deployment\
          -Dmule.artifact=$artifactName \
          -Danypoint.username="$username" \
          -Danypoint.password="$password" \
