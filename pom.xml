@@ -19,6 +19,9 @@
                 <artifactId>mule-maven-plugin</artifactId>
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
+                <configuration>
+                    <classifier>mule-application</classifier>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -150,7 +153,7 @@
                                 <muleVersion>${app.runtime}</muleVersion>
                                 <username>${anypoint.username}</username>
                                 <password>${anypoint.password}</password>
-                                <applicationName>${artifactId}-${anypoint.environment}</applicationName>
+                                <applicationName>${project.artifactId}-${anypoint.environment}</applicationName>
                                 <environment>${anypoint.environment}</environment>
                                 <releaseChannel>EDGE</releaseChannel>
                                 <javaVersion>17</javaVersion>
@@ -180,7 +183,7 @@
                             <muleVersion>${app.runtime}</muleVersion>
                             <username>${anypoint.username}</username>
                             <password>${anypoint.password}</password>
-                            <applicationName>${artifactId}-${anypoint.environment}</applicationName> <!-- Maybe change with project.artifactId-->
+                            <applicationName>${project.artifactId}-${anypoint.environment}</applicationName> <!-- Maybe change with project.artifactId-->
                             <environment>${anypoint.environment}</environment>
                             <releaseChannel>EDGE</releaseChannel>
                             <javaVersion>17</javaVersion>
