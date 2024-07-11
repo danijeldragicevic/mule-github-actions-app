@@ -27,8 +27,18 @@ runs:
         name: artifacts
 
     - name: Echo deployment start message
-      run: echo "Starting deploy-to-ch1"
+      run: echo "Starting deploy-to-ch2"
       shell: bash
+
+    - name: Publish to Exchange
+      run: |
+        mvn deploy --settings .maven/settings.xml -DskipMunitTests \
+         -Danypoint.username="$username" \
+         -Danypoint.password="$password" \
+      shell: bash
+      env:
+        username: ${{ inputs.username }}
+        password: ${{ inputs.password }}
 
     - name: Deploy the application
       run: |
