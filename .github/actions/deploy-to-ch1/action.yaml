@@ -26,10 +26,6 @@ runs:
       with:
         name: artifacts
 
-    - name: Echo deployment start message
-      run: echo "Starting deploy-to-ch1"
-      shell: bash
-  
     - name: Deploy the application
       run: |
         artifactName=$(ls *.jar | head -1)
@@ -43,3 +39,10 @@ runs:
         username: ${{ inputs.username }}
         password: ${{ inputs.password }}
         environment: ${{ inputs.environment }}
+
+    - name: Echo deployment success message
+      run: echo "Application deployed successfully. Artifact: $artifactName, Environment: $environment"
+      shell: bash
+      env:
+        artifactName: $artifactName
+        environment: $environment
