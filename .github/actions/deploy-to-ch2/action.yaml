@@ -26,6 +26,10 @@ runs:
       with:
         name: artifacts
 
+    - name: Echo deployment start message
+      run: echo "Starting deploy-to-ch2"
+      shell: bash
+
     - name: Publish to Exchange
       run: |
         mvn deploy --settings .maven/settings.xml -DskipMunitTests \
