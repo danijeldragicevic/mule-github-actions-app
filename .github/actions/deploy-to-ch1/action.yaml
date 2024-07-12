@@ -41,8 +41,9 @@ runs:
         environment: ${{ inputs.environment }}
 
     - name: Echo deployment success message
-      run: echo "Application deployed successfully. Artifact: $artifactName, Environment: $environment"
+      run: |
+        echo "Application deployed successfully. Artifact: $$artifactName, Environment: $$environment"
       shell: bash
       env:
         artifactName: ${{ env.artifactName }}
-        environment: ${{ env.environment }}
+        environment: ${{ inputs.environment }}
