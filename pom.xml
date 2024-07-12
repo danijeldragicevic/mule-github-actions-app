@@ -180,6 +180,7 @@
                                 <username>${anypoint.username}</username>
                                 <password>${anypoint.password}</password>
                                 <applicationName>${project.artifactId}-${anypoint.environment}</applicationName>
+                                <!-- Maybe change with project.artifactId-->
                                 <environment>${anypoint.environment}</environment>
                                 <releaseChannel>EDGE</releaseChannel>
                                 <javaVersion>17</javaVersion>
