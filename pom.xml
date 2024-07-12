@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>479e5802-35c4-4e44-ace2-74d88a76979c</groupId>
     <artifactId>mule-github-actions-app</artifactId>
-    <version>1.0.10</version>
+    <version>1.0.11</version>
     <packaging>mule-application</packaging>
     <name>mule-github-actions-app</name>
     <properties>

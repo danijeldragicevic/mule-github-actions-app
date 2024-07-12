@@ -2,7 +2,7 @@ name: Build and Deploy to Anypoint Platform
 
 on:
   push:
-    branches: [ dev, qa ]
+    branches: [ dev ]
   pull_request:
     branches: [ qa ]
     types: [ closed ]
@@ -67,7 +67,7 @@ jobs:
           fi
         shell: bash
 
-      - name: Deploy to Cloud Hub 1.0
+      - name: Deploy to Cloud Hub 1.0, on ${{ env.environment }} environment
         if: env.deploymentType == 'cloudHubDeployment'
         uses: ./.github/actions/deploy-to-ch1
         with:
@@ -75,7 +75,7 @@ jobs:
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
           environment: ${{ env.environment }}
       
-      - name: Deploy to Cloud Hub 2.0
+      - name: Deploy to Cloud Hub 2.0, ${{ env.environment }} environment
         if: env.deploymentType == 'cloudhub2Deployment'
         uses: ./.github/actions/deploy-to-ch2
         with:
