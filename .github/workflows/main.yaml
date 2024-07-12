@@ -1,17 +1,16 @@
 name: Build and Deploy to Anypoint Platform
 
-#TODO Add job timeouts
-
 on:
   push:
-    branches: [ dev ]
-  pull_request:
+    branches: [ dev, qa ]
+  pull_request_target:
     branches: [ qa ]
     types: [ closed ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v4
@@ -49,6 +48,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v4
