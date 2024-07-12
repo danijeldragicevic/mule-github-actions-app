@@ -39,11 +39,3 @@ runs:
         username: ${{ inputs.username }}
         password: ${{ inputs.password }}
         environment: ${{ inputs.environment }}
-
-    - name: Echo deployment success message
-      run: |
-        echo "Application deployed successfully. Artifact: $$artifactName, Environment: $$environment"
-      shell: bash
-      env:
-        artifactName: ${{ env.artifactName }}
-        environment: ${{ inputs.environment }}
