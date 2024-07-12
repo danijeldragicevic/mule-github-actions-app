@@ -44,5 +44,5 @@ runs:
       run: echo "Application deployed successfully. Artifact: $artifactName, Environment: $environment"
       shell: bash
       env:
-        artifactName: $artifactName
-        environment: $environment
+        artifactName: ${{ env.artifactName }}
+        environment: ${{ env.environment }}
