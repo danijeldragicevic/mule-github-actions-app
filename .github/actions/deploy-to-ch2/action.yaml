@@ -26,10 +26,6 @@ runs:
       with:
         name: artifacts
 
-    - name: Echo deployment start message
-      run: echo "Starting deploy-to-ch2"
-      shell: bash
-
     - name: Publish to Exchange
       run: |
         mvn deploy --settings .maven/settings.xml -DskipMunitTests \
@@ -53,3 +49,10 @@ runs:
         username: ${{ inputs.username }}
         password: ${{ inputs.password }}
         environment: ${{ inputs.environment }}
+
+    - name: Echo deployment success message
+      run: echo "Application deployed successfully. Artifact: $artifactName, Environment: $environment"
+      shell: bash
+      env:
+        artifactName: $artifactName
+        environment: $environment
