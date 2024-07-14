@@ -2,10 +2,9 @@ name: Build and Deploy to Anypoint Platform
 
 on:
   push:
-    branches: [ dev ]
-  pull_request:
-    branches: [ qa ]
-    types: [ closed ]
+    branches: 
+      - dev
+      - qa
 
 jobs:
   build:
@@ -32,13 +31,6 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml -DskipMunitTests
 
-      # - name: Stamp artifact file name with commit hash
-      #   run: |
-      #     artifactName1=$(ls target/*.jar | head -1)
-      #     commitHash=$(git rev-parse --short "$GITHUB_SHA")
-      #     artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/-$commitHash.jar/g")
-      #     mv $artifactName1 $artifactName2
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -55,29 +47,38 @@ jobs:
 
       - name: Set target environment and deployment type
         run: |
-          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "dev" ]]; then
+          if [[ "${{ github.ref_name }}" == "dev" ]]; then
             echo "environment=dev" >> $GITHUB_ENV
             echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
-          elif [[ "${{ github.event.pull_request.merged }}" == "true" && "${{ github.ref_name }}" == "qa" ]]; then
+          
+          elif [[ "${{ github.ref_name }}" == "qa" ]]; then
             echo "environment=qa" >> $GITHUB_ENV
             echo "deploymentType=cloudhub2Deployment" >> $GITHUB_ENV
+          
           else
             echo "Skipping deployment"
             exit 0
           fi
         shell: bash
 
-      - name: Deploy to Cloud Hub 1.0, on ${{ env.environment }} environment
-        if: env.deploymentType == 'cloudHubDeployment'
-        uses: ./.github/actions/deploy-to-ch1
-        with:
-          username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
-          password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
-          environment: ${{ env.environment }}
+      # Maybe I can merge this into one if-else statement
+      # - name: Deploy to ${{ env.environment }} environment
+      #   if: env.deploymentType == 'cloudHubDeployment'
+      #   uses: ./.github/actions/deploy-to-ch1
+      #   with:
+      #     username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+      #     password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+      #     environment: ${{ env.environment }}
       
-      - name: Deploy to Cloud Hub 2.0, ${{ env.environment }} environment
-        if: env.deploymentType == 'cloudhub2Deployment'
-        uses: ./.github/actions/deploy-to-ch2
+      # - name: Deploy to ${{ env.environment }} environment
+      #   if: env.deploymentType == 'cloudhub2Deployment'
+      #   uses: ./.github/actions/deploy-to-ch2
+      #   with:
+      #     username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+      #     password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+      #     environment: ${{ env.environment }}
+      - name: Deploy to ${{ env.environment }} environment
+        uses: ./.github/actions/deploy-to-${{ env.deploymentType == 'cloudHubDeployment' && 'ch1' || 'ch2' }}
         with:
           username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
