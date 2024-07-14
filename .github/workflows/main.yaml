@@ -61,25 +61,19 @@ jobs:
           fi
         shell: bash
 
-      # Maybe I can merge this into one if-else statement
-      # - name: Deploy to ${{ env.environment }} environment
-      #   if: env.deploymentType == 'cloudHubDeployment'
-      #   uses: ./.github/actions/deploy-to-ch1
-      #   with:
-      #     username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
-      #     password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
-      #     environment: ${{ env.environment }}
-      
-      # - name: Deploy to ${{ env.environment }} environment
-      #   if: env.deploymentType == 'cloudhub2Deployment'
-      #   uses: ./.github/actions/deploy-to-ch2
-      #   with:
-      #     username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
-      #     password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
-      #     environment: ${{ env.environment }}
       - name: Deploy to ${{ env.environment }} environment
-        uses: ./.github/actions/deploy-to-${{ env.deploymentType == 'cloudHubDeployment' && 'ch1' || 'ch2' }}
+        if: env.deploymentType == 'cloudHubDeployment'
+        uses: ./.github/actions/deploy-to-ch1
         with:
           username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
           environment: ${{ env.environment }}
+      
+      - name: Deploy to ${{ env.environment }} environment
+        if: env.deploymentType == 'cloudhub2Deployment'
+        uses: ./.github/actions/deploy-to-ch2
+        with:
+          username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+          password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+          environment: ${{ env.environment }}
+      
