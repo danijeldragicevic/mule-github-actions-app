@@ -51,22 +51,19 @@ jobs:
           if [[ "${{ github.ref_name }}" == "dev" ]]; then
             echo "environment=dev" >> $GITHUB_ENV
             echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
-          
           elif [[ "${{ github.ref_name }}" == "qa" ]]; then
             echo "environment=qa" >> $GITHUB_ENV
             echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
-          
           elif [[ "${{ github.ref_name }}" == "prod" ]]; then
             echo "environment=prod" >> $GITHUB_ENV
             echo "deploymentType=cloudhub2Deployment" >> $GITHUB_ENV
-          
           else
             echo "Skipping deployment"
             exit 0
           fi
         shell: bash
 
-      - name: Deploy to ${{ env.environment }} environment
+      - name: Deploy to CloudHub 1.0 (${{ env.environment }})
         if: env.deploymentType == 'cloudHubDeployment'
         uses: ./.github/actions/deploy-to-ch1
         with:
@@ -74,7 +71,7 @@ jobs:
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
           environment: ${{ env.environment }}
       
-      - name: Deploy to ${{ env.environment }} environment
+      - name: Deploy to CloudHub 2.0 (${{ env.environment }})
         if: env.deploymentType == 'cloudhub2Deployment'
         uses: ./.github/actions/deploy-to-ch2
         with:
