@@ -5,6 +5,7 @@ on:
     branches: 
       - dev
       - qa
+      - prod
 
 jobs:
   build:
@@ -53,6 +54,10 @@ jobs:
           
           elif [[ "${{ github.ref_name }}" == "qa" ]]; then
             echo "environment=qa" >> $GITHUB_ENV
+            echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
+          
+          elif [[ "${{ github.ref_name }}" == "prod" ]]; then
+            echo "environment=prod" >> $GITHUB_ENV
             echo "deploymentType=cloudhub2Deployment" >> $GITHUB_ENV
           
           else
