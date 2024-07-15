@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>479e5802-35c4-4e44-ace2-74d88a76979c</groupId>
     <artifactId>mule-github-actions-app</artifactId>
-    <version>1.0.12</version>
+    <version>1.0.13</version>
     <packaging>mule-application</packaging>
     <name>mule-github-actions-app</name>
     <properties>
@@ -12,7 +12,7 @@
         <mule.maven.plugin.version>4.1.1</mule.maven.plugin.version>
         <munit.version>3.2.0</munit.version>
     </properties>
-	<build>
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
