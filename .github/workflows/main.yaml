@@ -84,4 +84,10 @@ jobs:
           username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
           environment: ${{ env.environment }}
-      
+  
+  deployment_success:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Signal successfull deployment
+        run: echo "Deployment successfull"
