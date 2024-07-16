@@ -69,7 +69,7 @@ jobs:
           fi
         shell: bash
 
-      - name: Deploy to CloudHub 1.0 (${{ env.environment }})
+      - name: Deploy to ${{ env.environment }}
         if: env.deploymentType == 'cloudHubDeployment'
         uses: ./.github/actions/deploy-to-ch1
         with:
@@ -77,7 +77,7 @@ jobs:
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
           environment: ${{ env.environment }}
       
-      - name: Deploy to CloudHub 2.0 (${{ env.environment }})
+      - name: Deploy to ${{ env.environment }}
         if: env.deploymentType == 'cloudhub2Deployment'
         uses: ./.github/actions/deploy-to-ch2
         with:
@@ -85,9 +85,18 @@ jobs:
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
           environment: ${{ env.environment }}
           
-  deployment_success:
+  signal_deployment_qa:
+    if: github.ref == 'refs/heads/qa'
     needs: deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Signal successful deployment
-        run: echo "Deployment successful"
+      - name: Signal successful deployment to qa
+        run: echo "Deployment to qa successful"
+
+  signal_deployment_prod:
+    if: github.ref == 'refs/heads/prod'
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Signal successful deployment to prod
+        run: echo "Deployment to prod successful"
