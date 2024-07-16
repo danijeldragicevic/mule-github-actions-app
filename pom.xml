@@ -5,7 +5,7 @@
     <groupId>479e5802-35c4-4e44-ace2-74d88a76979c</groupId>
     <artifactId>mule-github-actions-app</artifactId>
     <!-- Change version for every CH2.0 deployment; no SNAPSHOTs allowed. -->
-    <version>1.0.20</version>
+    <version>1.1.0</version>
     <packaging>mule-application</packaging>
     <name>mule-github-actions-app</name>
     <properties>
