@@ -69,7 +69,7 @@ jobs:
           fi
         shell: bash
 
-      - name: Deploy to CloudHub 1.0 (${{ env.environment }})
+      - name: Deploy to ${{ env.environment }}
         if: env.deploymentType == 'cloudHubDeployment'
         uses: ./.github/actions/deploy-to-ch1
         with:
@@ -77,11 +77,27 @@ jobs:
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
           environment: ${{ env.environment }}
       
-      - name: Deploy to CloudHub 2.0 (${{ env.environment }})
+      - name: Deploy to ${{ env.environment }}
         if: env.deploymentType == 'cloudhub2Deployment'
         uses: ./.github/actions/deploy-to-ch2
         with:
           username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
           environment: ${{ env.environment }}
-      
+          
+  signal_success:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create success status check
+        env:
+          GITHUB_TOKEN: ${{ secrets.G_TOKEN }}
+        run: |
+          curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
+          -H "Accept: application/vnd.github.v3+json" \
+          "https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }}" \
+          -d '{
+            "state": "success",
+            "context": "deployment/${{ github.ref_name }}",
+            "description": "Deployment successful"
+          }'
