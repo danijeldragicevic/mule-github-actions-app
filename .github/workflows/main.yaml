@@ -84,6 +84,7 @@ jobs:
           username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
           environment: ${{ env.environment }}
+<<<<<<< HEAD
   
   deployment_success:
     needs: build
@@ -91,3 +92,6 @@ jobs:
     steps:
       - name: Signal successfull deployment
         run: echo "Deployment successfull"
+=======
+      
+>>>>>>> c56d9123ec846dfe5931e8c9c141a531e59bf21e
