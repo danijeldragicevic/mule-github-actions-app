@@ -85,6 +85,14 @@ jobs:
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
           environment: ${{ env.environment }}
           
+  signal_deployment_dev:
+    if: github.ref == 'refs/heads/dev'
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Signal successful deployment to dev
+        run: echo "Deployment to dev successful"
+
   signal_deployment_qa:
     if: github.ref == 'refs/heads/qa'
     needs: deploy
