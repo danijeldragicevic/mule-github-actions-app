@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <!-- Replace with your Business Group ID for CH2.0 deployment -->
     <groupId>479e5802-35c4-4e44-ace2-74d88a76979c</groupId>
     <artifactId>mule-github-actions-app</artifactId>
-    <version>1.0.0</version>
+    <!-- Change version for every CH2.0 deployment; no SNAPSHOTs allowed. -->
+    <version>1.1.0</version>
     <packaging>mule-application</packaging>
     <name>mule-github-actions-app</name>
     <properties>
@@ -14,6 +16,7 @@
     </properties>
     <build>
         <plugins>
+            <!-- Declared here to avoid packaging error. Also, declared in the pom profiles, to configure different deployment types. -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
@@ -95,6 +98,7 @@
         </dependency>
     </dependencies>
     <repositories>
+        <!-- Required for CH2.0 deployments -->
         <repository>
             <id>anypoint-exchange-v3</id>
             <name>Anypoint Exchange</name>
@@ -125,6 +129,7 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
+    <!-- Required for CH2.0 deployments -->
     <distributionManagement>
         <repository>
             <id>Repository</id>
@@ -144,6 +149,10 @@
                         <version>${mule.maven.plugin.version}</version>
                         <extensions>true</extensions>
                         <configuration>
+                            <!-- 
+                                Configure the deployment on CH1.0. Please refer to the official documentation for valid values: 
+                                https://docs.mulesoft.com/mule-runtime/latest/deploy-to-cloudhub 
+                            -->
                             <cloudHubDeployment>
                                 <uri>https://anypoint.mulesoft.com</uri>
                                 <muleVersion>${app.runtime}</muleVersion>
@@ -174,6 +183,10 @@
                         <version>${mule.maven.plugin.version}</version>
                         <extensions>true</extensions>
                         <configuration>
+                            <!-- 
+                                Configure the deployment on CH2.0. Please refer to the official documentation for valid values: 
+                                https://docs.mulesoft.com/mule-runtime/latest/deploy-to-cloudhub-2
+                            -->
                             <cloudhub2Deployment>
                                 <uri>https://anypoint.mulesoft.com</uri>
                                 <muleVersion>${app.runtime}</muleVersion>
