@@ -85,26 +85,19 @@ jobs:
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
           environment: ${{ env.environment }}
           
-  signal_deployment_dev:
-    if: github.ref == 'refs/heads/dev'
+  signal_success:
     needs: deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Signal successful deployment to dev
-        run: echo "Deployment to dev successful"
-
-  signal_deployment_qa:
-    if: github.ref == 'refs/heads/qa'
-    needs: deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Signal successful deployment to qa
-        run: echo "Deployment to qa successful"
-
-  signal_deployment_prod:
-    if: github.ref == 'refs/heads/prod'
-    needs: deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Signal successful deployment to prod
-        run: echo "Deployment to prod successful"
+      - name: Create success status check
+        env:
+          GITHUB_TOKEN: ${{ secrets.G_TOKEN }}
+        run: |
+          curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
+          -H "Accept: application/vnd.github.v3+json" \
+          "https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }}" \
+          -d '{
+            "state": "success",
+            "context": "deployment/${{ github.ref_name }}",
+            "description": "Deployment successful"
+          }'
