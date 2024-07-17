@@ -2,10 +2,10 @@ name: Build and Deploy to Anypoint Platform
 
 on:
   push:
-    branches: 
-      - dev
-      - qa
-      - prod
+    branches: [ dev ]
+  pull_request:
+    branches: [ qa ]
+    types: [ closed ]
 
 jobs:
   build:
@@ -54,7 +54,8 @@ jobs:
             echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
           
           # Deployment goes to CH1 (qa)
-          elif [[ "${{ github.ref_name }}" == "qa" ]]; then
+          # elif [[ "${{ github.ref_name }}" == "qa" ]]; then
+            elif [[ "${{ github.event.pull_request.merged }}" == "true" && "${{ github.ref_name }}" == "qa" ]]; then
             echo "environment=qa" >> $GITHUB_ENV
             echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
           
