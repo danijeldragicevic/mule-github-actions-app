@@ -3,9 +3,14 @@ name: Build and Deploy to Anypoint Platform
 on:
   push:
     branches: [ dev ]
+  
   pull_request:
     branches: [ qa ]
     types: [ closed ]
+  
+  release:
+    branches: [ prod ]
+    types: [ created ]
 
 jobs:
   build:
@@ -48,19 +53,20 @@ jobs:
 
       - name: Set target environment and deployment type
         run: |
-          # Deployment goes to CH1 (dev)
+          # Deployment goes to CH1.0 (dev)
           if [[ "${{ github.ref_name }}" == "dev" ]]; then
             echo "environment=dev" >> $GITHUB_ENV
             echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
           
-          # Deployment goes to CH1 (qa)
+          # Deployment goes to CH1.0 (qa)
           # elif [[ "${{ github.ref_name }}" == "qa" ]]; then
             elif [[ "${{ github.event.pull_request.merged }}" == "true" && "${{ github.ref_name }}" == "qa" ]]; then
             echo "environment=qa" >> $GITHUB_ENV
             echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
           
-          # Deployment goes to CH2 (prod)
-          elif [[ "${{ github.ref_name }}" == "prod" ]]; then
+          # Deployment goes to CH2.0 (prod)
+          # elif [[ "${{ github.ref_name }}" == "prod" ]]; then
+            elif [[ "${{ github.event_name }}" == "release" && "${{ github.ref_name }}" == "prod"]]; then
             echo "environment=prod" >> $GITHUB_ENV
             echo "deploymentType=cloudhub2Deployment" >> $GITHUB_ENV
           
@@ -70,7 +76,7 @@ jobs:
           fi
         shell: bash
 
-      - name: Deploy to ${{ env.environment }}
+      - name: Deploy to CH1.0 (${{ env.environment }})
         if: env.deploymentType == 'cloudHubDeployment'
         uses: ./.github/actions/deploy-to-ch1
         with:
@@ -78,7 +84,7 @@ jobs:
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
           environment: ${{ env.environment }}
       
-      - name: Deploy to ${{ env.environment }}
+      - name: Deploy to CH2.0 (${{ env.environment }})
         if: env.deploymentType == 'cloudhub2Deployment'
         uses: ./.github/actions/deploy-to-ch2
         with:
@@ -86,7 +92,7 @@ jobs:
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
           environment: ${{ env.environment }}
           
-  signal_success:
+  success:
     needs: deploy
     runs-on: ubuntu-latest
     steps:
