@@ -1,0 +1,1 @@
+# Release Notes for mule-github-actions-app Version 1.1.2
