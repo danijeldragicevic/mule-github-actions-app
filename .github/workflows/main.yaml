@@ -33,6 +33,9 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
       
+      - name: Print github refs
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/}}"
+
       - name: Print branch name
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}"
 
