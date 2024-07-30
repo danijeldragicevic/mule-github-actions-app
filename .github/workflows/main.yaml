@@ -64,7 +64,7 @@ jobs:
             echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
           
           # Deployment goes to CH2.0 (prod)
-          elif [[ "${{ github.event_name }}" == "release" ]]; then
+          elif [[ "${{ github.event_name }}" == "release" && "${{ github.ref_name }}" == "prod" ]]; then
             echo "environment=prod" >> $GITHUB_ENV
             echo "deploymentType=cloudhub2Deployment" >> $GITHUB_ENV
           
