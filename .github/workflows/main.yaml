@@ -9,7 +9,6 @@ on:
     types: [ closed ]
   
   release:
-    branches: [ prod ]
     types: [ created ]
 
 jobs:
@@ -33,6 +32,9 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '11'
+      
+      - name: Print branch name
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}"
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml -DskipMunitTests
