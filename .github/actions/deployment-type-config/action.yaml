@@ -9,32 +9,33 @@ inputs:
 runs:
   using: "composite"
   steps:
-    run: |
-      # Deploy to CH1.0 (dev)
-      if [[ "$eventName" == "push" && "$branchName" == "dev" ]]; then
-        echo "environment=dev" >> $GITHUB_ENV
-        echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
-      
-      # Deploy to CH1.0 (qa)
-      elif [[ "$eventName" == "push" && "branchName" == "qa" ]]; then
-        echo "environment=qa" >> $GITHUB_ENV
-        echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
-      
-      # Deploy to CH2.0 (staging)
-      elif [[ "$eventName" == "push" && "$branchName" == "prod" ]]; then
-        echo "environment=staging" >> $GITHUB_ENV
-        echo "deploymentType=cloudhub2Deployment" >> $GITHUB_ENV
-      
-      # Deploy to CH2.0 (prod)
-      elif [[ "$eventName" == "release" ]]; then
-        echo "environment=prod" >> $GITHUB_ENV
-        echo "deploymentType=cloudhub2Deployment" >> $GITHUB_ENV
-      
-      else
-        echo "Skipping deployment"
-        exit 0
-      fi
-    shell: bash
-    env:
-      eventName: ${{ inputs.eventName }}
-      branchName: ${{ inputs.branchName }}
+    - name: Set target environment and deployment type
+      run: |
+        # Deploy to CH1.0 (dev)
+        if [[ "$eventName" == "push" && "$branchName" == "dev" ]]; then
+          echo "environment=dev" >> $GITHUB_ENV
+          echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
+        
+        # Deploy to CH1.0 (qa)
+        elif [[ "$eventName" == "push" && "branchName" == "qa" ]]; then
+          echo "environment=qa" >> $GITHUB_ENV
+          echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
+        
+        # Deploy to CH2.0 (staging)
+        elif [[ "$eventName" == "push" && "$branchName" == "prod" ]]; then
+          echo "environment=staging" >> $GITHUB_ENV
+          echo "deploymentType=cloudhub2Deployment" >> $GITHUB_ENV
+        
+        # Deploy to CH2.0 (prod)
+        elif [[ "$eventName" == "release" ]]; then
+          echo "environment=prod" >> $GITHUB_ENV
+          echo "deploymentType=cloudhub2Deployment" >> $GITHUB_ENV
+        
+        else
+          echo "Skipping deployment"
+          exit 0
+        fi
+      shell: bash
+      env:
+        eventName: ${{ inputs.eventName }}
+        branchName: ${{ inputs.branchName }}
