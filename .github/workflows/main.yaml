@@ -2,11 +2,7 @@ name: Build and Deploy to Anypoint Platform
 
 on:
   push:
-    branches: [ dev ]
-  
-  pull_request:
-    branches: [ qa ]
-    types: [ closed ]
+    branches: [ dev, qa ]
   
   release:
     types: [ created ]
@@ -33,12 +29,6 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
       
-      - name: Print github refs
-        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/}}"
-
-      - name: Print branch name
-        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}"
-
       - name: Build with Maven
         run: mvn -B package --file pom.xml -DskipMunitTests
 
@@ -58,18 +48,18 @@ jobs:
 
       - name: Set target environment and deployment type
         run: |
-          # Deployment goes to CH1.0 (dev)
-          if [[ "${{ github.ref_name }}" == "dev" ]]; then
+          # Deploy to CH1.0 (dev)
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "dev" ]]; then
             echo "environment=dev" >> $GITHUB_ENV
             echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
           
-          # Deployment goes to CH1.0 (qa)
-          elif [[ "${{ github.event.pull_request.merged }}" == "true" && "${{ github.ref_name }}" == "qa" ]]; then
+          # Deploy to CH1.0 (qa)
+          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "qa" ]]; then
             echo "environment=qa" >> $GITHUB_ENV
             echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
           
-          # Deployment goes to CH2.0 (prod)
-          elif [[ "${{ github.event_name }}" == "release" && "${{ github.ref_name }}" == "prod" ]]; then
+          # Deploy to CH2.0 (prod)
+          elif [[ "${{ github.event_name }}" == "release" ]]; then
             echo "environment=prod" >> $GITHUB_ENV
             echo "deploymentType=cloudhub2Deployment" >> $GITHUB_ENV
           
