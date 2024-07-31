@@ -45,33 +45,11 @@ jobs:
       - name: Checkout this repo
         uses: actions/checkout@v4
 
-      - name: Set target environment and deployment type
-        run: |
-          # Deploy to CH1.0 (dev)
-          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "dev" ]]; then
-            echo "environment=dev" >> $GITHUB_ENV
-            echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
-          
-          # Deploy to CH1.0 (qa)
-          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "qa" ]]; then
-            echo "environment=qa" >> $GITHUB_ENV
-            echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
-          
-          # Deploy to CH2.0 (staging)
-          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "prod" ]]; then
-            echo "environment=staging" >> $GITHUB_ENV
-            echo "deploymentType=cloudhub2Deployment" >> $GITHUB_ENV
-          
-          # Deploy to CH2.0 (prod)
-          elif [[ "${{ github.event_name }}" == "release" ]]; then
-            echo "environment=prod" >> $GITHUB_ENV
-            echo "deploymentType=cloudhub2Deployment" >> $GITHUB_ENV
-          
-          else
-            echo "Skipping deployment"
-            exit 0
-          fi
-        shell: bash
+      - name: Set target environment and deployment type (1)
+        uses: ././github/actions/set-deployment-type
+        with:
+          eventName: ${{ github.event_name }}
+          branchName: ${{ github.ref_name }}
 
       - name: Deploy to CH1.0 (${{ env.environment }})
         if: env.deploymentType == 'cloudHubDeployment'
