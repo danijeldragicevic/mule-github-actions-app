@@ -2,8 +2,7 @@ name: Build and Deploy to Anypoint Platform
 
 on:
   push:
-    branches: [ dev, qa ]
-  
+    branches: [ dev, qa, prod ]
   release:
     types: [ created ]
 
@@ -58,6 +57,11 @@ jobs:
             echo "environment=qa" >> $GITHUB_ENV
             echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
           
+          # Deploy to CH2.0 (staging)
+          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "prod" ]]; then
+            echo "environment=staging" >> $GITHUB_ENV
+            echo "deploymentType=cloudhub2Deployment" >> $GITHUB_ENV
+          
           # Deploy to CH2.0 (prod)
           elif [[ "${{ github.event_name }}" == "release" ]]; then
             echo "environment=prod" >> $GITHUB_ENV
@@ -85,7 +89,7 @@ jobs:
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
           environment: ${{ env.environment }}
           
-  success:
+  verify:
     needs: deploy
     runs-on: ubuntu-latest
     steps:
