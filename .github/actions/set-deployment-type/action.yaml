@@ -22,7 +22,7 @@ runs:
           echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
         
         # Deploy to CH2.0 (staging)
-        elif [[ "eventName" == "push" && "$branchName" == "prod" ]]; then
+        elif [[ "$eventName" == "push" && "$branchName" == "prod" ]]; then
           echo "environment=staging" >> $GITHUB_ENV
           echo "deploymentType=cloudhub2Deployment" >> $GITHUB_ENV
         
@@ -36,3 +36,6 @@ runs:
           exit 0
         fi
       shell: bash
+      env:
+        eventName: ${{ inputs.eventName }}
+        branchName: ${{ inputs.branchName }}
