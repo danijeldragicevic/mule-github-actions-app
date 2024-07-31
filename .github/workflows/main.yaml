@@ -2,8 +2,7 @@ name: Build and Deploy to Anypoint Platform
 
 on:
   push:
-    branches: [ dev, qa ]
-  
+    branches: [ dev, qa, prod ]
   release:
     types: [ created ]
 
@@ -47,31 +46,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set target environment and deployment type
-        run: |
-          # Deploy to CH1.0 (dev)
-          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "dev" ]]; then
-            echo "environment=dev" >> $GITHUB_ENV
-            echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
-          
-          # Deploy to CH1.0 (qa)
-          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "qa" ]]; then
-            echo "environment=qa" >> $GITHUB_ENV
-            echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
-          
-          # Deploy to CH2.0 (prod)
-          elif [[ "${{ github.event_name }}" == "release" ]]; then
-            echo "environment=prod" >> $GITHUB_ENV
-            echo "deploymentType=cloudhub2Deployment" >> $GITHUB_ENV
-          
-          else
-            echo "Skipping deployment"
-            exit 0
-          fi
-        shell: bash
+        uses: ./.github/actions/deployment-type-config
+        with:
+          eventName: ${{ github.event_name }}
+          branchName: ${{ github.ref_name }}
 
       - name: Deploy to CH1.0 (${{ env.environment }})
         if: env.deploymentType == 'cloudHubDeployment'
-        uses: ./.github/actions/deploy-to-ch1
+        uses: ./.github/actions/deploy-to-ch1-config
         with:
           username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
@@ -79,13 +61,13 @@ jobs:
       
       - name: Deploy to CH2.0 (${{ env.environment }})
         if: env.deploymentType == 'cloudhub2Deployment'
-        uses: ./.github/actions/deploy-to-ch2
+        uses: ./.github/actions/deploy-to-ch2-config
         with:
           username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
           environment: ${{ env.environment }}
           
-  success:
+  verify:
     needs: deploy
     runs-on: ubuntu-latest
     steps:

@@ -5,7 +5,7 @@
     <groupId>602fa1f8-1cdc-44a6-bc13-6a7eace00c83</groupId>
     <artifactId>mule-github-actions-app</artifactId>
     <!-- Change version for every CH2.0 deployment; no SNAPSHOTs allowed. -->
-    <version>1.0.6</version>
+    <version>1.1.1</version>
     <packaging>mule-application</packaging>
     <name>mule-github-actions-app</name>
     <properties>
@@ -16,7 +16,10 @@
     </properties>
     <build>
         <plugins>
-            <!-- Declared here to avoid packaging error. Also, declared in the pom profiles, to configure different deployment types. -->
+            <!-- 
+                Declared here to avoid packaging error. 
+                Also, declared in the pom profiles, to configure different deployment types. 
+             -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
@@ -55,6 +58,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <!-- Required to read pom values via the properties (START) -->
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -68,6 +72,7 @@
                 </includes>
             </resource>
         </resources>
+        <!-- Required to read pom values via the properties (END) -->
     </build>
     <dependencies>
         <dependency>
@@ -98,13 +103,14 @@
         </dependency>
     </dependencies>
     <repositories>
-        <!-- Required for CH2.0 deployments -->
+        <!-- Required for CH2.0 deployments (START) -->
         <repository>
             <id>anypoint-exchange-v3</id>
             <name>Anypoint Exchange</name>
             <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
             <layout>default</layout>
         </repository>
+        <!-- Required for CH2.0 deployments (END) -->
         <repository>
             <id>mulesoft-releases</id>
             <name>MuleSoft Releases Repository</name>
@@ -129,7 +135,7 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-    <!-- Required for CH2.0 deployments -->
+    <!-- Required for CH2.0 deployments (START) -->
     <distributionManagement>
         <repository>
             <id>Repository</id>
@@ -138,6 +144,7 @@
             <layout>default</layout>
         </repository>
     </distributionManagement>
+    <!-- Required for CH2.0 deployments (END) -->
     <profiles>
         <profile>
             <id>cloudHubDeployment</id>
