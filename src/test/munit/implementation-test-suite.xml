@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+  xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+	http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+	http://www.mulesoft.org/schema/mule/munit-tools http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+  
+    <munit:config name="implementation-test-suite.xml" />
+  	<munit:test name="payload-is-json-data-type" doc:id="c434dc9e-3dbb-4d26-8344-77889fa8a76a" description="Test">
+        <munit:execution>
+            <flow-ref doc:name="read-application-data" doc:id="6b40cd38-8399-406a-ad6b-5e487ad3161d" name="read-application-data" />
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-that expression="#[payload]" is="#[MunitTools::withMediaType('application/json')]" doc:name="Assert that" doc:id="vxdfik" />
+        </munit:validation>
+    </munit:test>
+    <munit:test name="payload-have-groupId-attribute" >
+        <munit:execution>
+          <flow-ref doc:name="read-application-data" doc:id="6b40cd38-8399-406a-ad6b-5e487ad3161e" name="read-application-data" />
+        </munit:execution>
+        <munit:validation>
+          <munit-tools:assert-that expression="#[%dw 2.0 output application/java --- payload]" is="#[MunitTools::hasKey(MunitTools::equalTo('groupId'))]" doc:name="Assert that" doc:id="vxdfix" />
+        </munit:validation>
+    </munit:test>
+    <munit:test name="payload-have-artifactId-attribute" >
+        <munit:execution>
+          <flow-ref doc:name="read-application-data" doc:id="6b40cd38-8399-406a-ad6b-5e487ad3161e" name="read-application-data" />
+        </munit:execution>
+        <munit:validation>
+          <munit-tools:assert-that expression="#[%dw 2.0 output application/java --- payload]" is="#[MunitTools::hasKey(MunitTools::equalTo('artifactId'))]" doc:name="Assert that" doc:id="vxdfix" />
+        </munit:validation>
+    </munit:test>
+    <munit:test name="payload-have-version-attribute" >
+        <munit:execution>
+          <flow-ref doc:name="read-application-data" doc:id="6b40cd38-8399-406a-ad6b-5e487ad3161e" name="read-application-data" />
+        </munit:execution>
+        <munit:validation>
+          <munit-tools:assert-that expression="#[%dw 2.0 output application/java --- payload]" is="#[MunitTools::hasKey(MunitTools::equalTo('version'))]" doc:name="Assert that" doc:id="vxdfix" />
+        </munit:validation>
+    </munit:test>
+</mule>
