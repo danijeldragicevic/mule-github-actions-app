@@ -17,7 +17,7 @@ runs:
           echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
         
         # Deploy to CH1.0 (qa)
-        elif [[ "$eventName" == "push" && "branchName" == "qa" ]]; then
+        elif [[ "$eventName" == "push" && "$branchName" == "qa" ]]; then
           echo "environment=qa" >> $GITHUB_ENV
           echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
         
