@@ -1,4 +1,4 @@
-name: 'Set target environment and deployment type (2)'
+name: 'Set target environment and deployment type'
 
 inputs:
   eventName:
@@ -9,7 +9,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Set target environment and deployment type (3)
       run: |
         # Deploy to CH1.0 (dev)
         if [[ "$eventName" == "push" && "$branchName" == "dev" ]]; then

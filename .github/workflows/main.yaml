@@ -45,15 +45,15 @@ jobs:
       - name: Checkout this repo
         uses: actions/checkout@v4
 
-      - name: Set target environment and deployment type (1)
-        uses: ./.github/actions/set-deployment-type
+      - name: Set target environment and deployment type
+        uses: ./.github/actions/deployment-type-config
         with:
           eventName: ${{ github.event_name }}
           branchName: ${{ github.ref_name }}
 
       - name: Deploy to CH1.0 (${{ env.environment }})
         if: env.deploymentType == 'cloudHubDeployment'
-        uses: ./.github/actions/deploy-to-ch1
+        uses: ./.github/actions/deploy-to-ch1-config
         with:
           username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
@@ -61,7 +61,7 @@ jobs:
       
       - name: Deploy to CH2.0 (${{ env.environment }})
         if: env.deploymentType == 'cloudhub2Deployment'
-        uses: ./.github/actions/deploy-to-ch2
+        uses: ./.github/actions/deploy-to-ch2-config
         with:
           username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
           password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
