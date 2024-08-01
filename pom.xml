@@ -6,7 +6,8 @@
     <artifactId>mule-github-actions-app</artifactId>
     <!-- 
         Change version for every CH2.0 deployment. 
-        Remove SNAPSHOT for a stable asset on Exchange; otherwise, it will be in Development state.
+        Remove SNAPSHOT for a Stable asset on Exchange; 
+        otherwise, asset will be in Development state.
     -->
     <version>1.0.1-SNAPSHOT</version>
     <packaging>mule-application</packaging>

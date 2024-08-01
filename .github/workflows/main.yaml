@@ -83,3 +83,13 @@ jobs:
             "context": "deployment/${{ github.ref_name }}",
             "description": "Deployment successful"
           }'
+
+  release:
+      if: github.event_name == 'release'
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout this repo
+          uses: actions/checkout@v4
+
+        - name: Run a script
+          run: echo "This job runs only on release events"
