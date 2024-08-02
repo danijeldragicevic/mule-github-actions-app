@@ -83,20 +83,3 @@ jobs:
             "context": "deployment/${{ github.ref_name }}",
             "description": "Deployment successful"
           }'
-
-  release:
-      needs: deploy
-      if: github.event_name == 'release'
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout this repo
-          uses: actions/checkout@v4
-
-        - name: Install xmlstarlet
-          run: sudo apt-get install -y xmlstarlet
-
-        - name: Read current version from pom.xml
-          id: read_version
-          run: |
-            VERSION=$(xmlstarlet sel -t -v "/project/version" pom.xml)
-            echo "VERSION=$VERSION" >> $GITHUB_ENV

@@ -49,3 +49,20 @@ runs:
         username: ${{ inputs.username }}
         password: ${{ inputs.password }}
         environment: ${{ inputs.environment }}
+    
+    # - name: Read current application version
+    #   id: read_version
+    #   uses: wzieba/read-maven-pom-action@v1
+    #   with:
+    #     path: 'pom.xml'
+
+    # - name: Print current application version
+    #   run: echo "Current application version is ${{ steps.read_version.outputs.version }}"
+    #   shell: bash
+
+    - name: Read version pom.xml
+      id: getVersion
+      uses: smacdonald-parallelz/github-action-get-pom-version@v1.0.2
+  
+    - name: Print the version
+      run: echo "The version we just got is ${{ steps.getVersion.outputs.version }}"
