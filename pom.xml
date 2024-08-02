@@ -9,7 +9,7 @@
         Remove SNAPSHOT for a Stable asset on Exchange; 
         otherwise, asset will be in Development state.
     -->
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.10</version>
     <packaging>mule-application</packaging>
     <name>mule-github-actions-app</name>
     <properties>
