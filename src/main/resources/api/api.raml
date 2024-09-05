@@ -1,0 +1,15 @@
+#%RAML 1.0
+title: mule-github-actions-api
+version: v1.0
+
+/ping:
+  get:
+    displayName: Get application info
+    description: Shows application identifiers, fetched from the pom file
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include dataTypes/ping-response-data-type.raml
+            example: !include examples/ping-response-example.raml
+            

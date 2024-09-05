@@ -1,0 +1,24 @@
+name: 'Set deployment type'
+
+inputs:
+  targetEnvironment:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set deployment type
+      run: |
+        if [[ "$targetEnvironment" == "dev" || "$targetEnvironment" == "qa" ]]; then
+          echo "deploymentType=cloudHubDeployment" >> $GITHUB_ENV
+        
+        elif [[ "$targetEnvironment" == "prod" ]]; then
+          echo "deploymentType=cloudhub2Deployment" >> $GITHUB_ENV
+        
+        else
+          echo "Skipping deployment"
+          exit 0
+        fi
+      shell: bash
+      env:
+        targetEnvironment: ${{ inputs.targetEnvironment }}

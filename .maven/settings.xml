@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+  <servers>
+    <server>
+      <id>Repository</id>
+      <username>${anypoint.username}</username>
+      <password>${anypoint.password}</password>
+    </server>
+  </servers>
+</settings>

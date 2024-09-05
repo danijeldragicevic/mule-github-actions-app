@@ -1,0 +1,139 @@
+name: Build and Deploy to Anypoint Platform
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        type: choice
+        required: true
+        options:
+          - dev
+          - qa
+          - prod
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - name: Create release
+        if: ${{ github.event.inputs.environment == 'qa' }}
+        run: |
+          mvn versions:set -DremoveSnapshot versions:commit
+          version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+          git add pom.xml
+          git commit -m "Create release $version"
+          git push https://x-access-token:$githubToken@github.com/${{ github.repository }}.git develop
+
+          git tag $version
+          git push https://x-access-token:$githubToken@github.com/${{ github.repository }}.git $version
+        shell: bash
+        env:
+          githubToken: ${{ secrets.G_TOKEN }}
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml -DskipMunitTests
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts
+          path: target/*.jar
+  
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Set deployment type
+        uses: ./.github/actions/deployment-type-config
+        with:
+          targetEnvironment: ${{ github.event.inputs.environment }}
+
+      - name: Deploy to CH1.0
+        if: env.deploymentType == 'cloudHubDeployment'
+        uses: ./.github/actions/deploy-to-ch1-config
+        with:
+          username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+          password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+          targetEnvironment: ${{ github.event.inputs.environment }}
+      
+      - name: Deploy to CH2.0
+        if: env.deploymentType == 'cloudhub2Deployment'
+        uses: ./.github/actions/deploy-to-ch2-config
+        with:
+          username: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+          password: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
+          targetEnvironment: ${{ github.event.inputs.environment }}
+
+  verify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+      
+      - name: Verify deployment
+        run: |
+          if [[ "$targetEnvironment" == "dev" ]]; then
+            curl -f http://mule-github-actions-app-dev.us-e2.cloudhub.io/api/ping || exit 1
+          
+          elif [[ "$targetEnvironment" == "qa" ]]; then
+            curl -f http://mule-github-actions-app-qa.us-e2.cloudhub.io/api/ping || exit 1
+          
+          elif [[ "$targetEnvironment" == "prod" ]]; then
+            curl -f https://mule-github-actions-app-prod-qefjd6.5sc6y6-1.usa-e2.cloudhub.io/api/ping || exit 1
+          
+          else
+            echo "Skipping deployment verification"
+            exit 0
+          fi
+        shell: bash
+        env:
+          targetEnvironment: ${{ github.event.inputs.environment }}
+
+      - name: Set next development cycle
+        if: ${{ github.event.inputs.environment == 'prod' }}
+        run: |
+          mvn versions:set -DnextSnapshot versions:commit
+          version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          
+          git checkout develop || git checkout -b develop
+          git add pom.xml
+          git commit -m "Increase version to $version for next development cycle"
+          git push https://x-access-token:$githubToken@github.com/${{ github.repository }}.git develop
+        shell: bash
+        env:
+          githubToken: ${{ secrets.G_TOKEN }}
