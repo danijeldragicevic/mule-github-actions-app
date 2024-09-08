@@ -41,6 +41,8 @@ Response: 200 OK
 # Github Actions
 This application implements GitHub actions to manage deployments on to the Anypoint Platform.
 Please see [workflows page](https://github.com/danijeldragicevic/mule-github-actions-app/actions/workflows/main.yaml) to run deployments on the various environments.
+| ![Screenshot 2024-09-08 at 12 15 10](https://github.com/user-attachments/assets/895cdefa-da13-4c56-b9e0-95a856e49e54) |
+|-|
 <br>
 
 # Licence
